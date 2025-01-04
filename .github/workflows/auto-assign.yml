@@ -9,7 +9,7 @@ jobs:
     runs-on: ubuntu-latest
     steps:
     - name: Assign PRs and Issues
-      uses: kentaro-m/auto-assign@v1
+      uses: kentaro-m/auto-assign-action@v2.0.0
       with:
         github-token: ${{ secrets.GITHUB_TOKEN }}
         assignees: |
