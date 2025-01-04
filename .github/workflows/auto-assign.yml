@@ -1,0 +1,17 @@
+name: Auto Assign
+on:
+  pull_request:
+    types: [opened, reopened, ready_for_review]
+  issues:
+    types: [opened]
+jobs:
+  auto-assign:
+    runs-on: ubuntu-latest
+    steps:
+    - name: Assign PRs and Issues
+      uses: kentaro-m/auto-assign@v1
+      with:
+        github-token: ${{ secrets.GITHUB_TOKEN }}
+        assignees: |
+          Danimarqz
+          MykytaRyasny
