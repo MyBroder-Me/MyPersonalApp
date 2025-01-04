@@ -4,6 +4,7 @@
     xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
     xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
     xmlns:local="clr-namespace:MyApp"
+    xmlns:views="clr-namespace:MyApp.Views"
     Shell.FlyoutBehavior="Flyout"
     Title="MyApp">
 
@@ -11,5 +12,9 @@
         Title="Home"
         ContentTemplate="{DataTemplate local:MainPage}"
         Route="MainPage" />
+    <ShellContent
+        Title="Books"
+        ContentTemplate="{DataTemplate views:BooksListingPage}"
+        Route="BooksListingPage" />
 
 </Shell>
