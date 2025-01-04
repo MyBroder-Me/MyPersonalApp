@@ -13,4 +13,3 @@ These files will be deployed with your package and will be accessible using Esse
 
 		var contents = reader.ReadToEnd();
 	}
-oh damn
