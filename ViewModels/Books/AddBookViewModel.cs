@@ -39,13 +39,7 @@ public partial class AddBookViewModel : ObservableObject
 
             if (result != null)
             {
-                // Upload the file to Supabase bucket
-                using var fileStream = await result.OpenReadAsync();
-                var extension = result.FileName.Split('.').Last();
-                var uploadedFilePath = await _storageService.UploadFileAsync(_bucket, $"/book-{System.Guid.NewGuid()}.{extension}", fileStream);
-
-                // Set the ImageUrl property to the uploaded file path
-                ImageUrl = uploadedFilePath;
+                ImageUrl = result.FullPath;
             }
         }
         catch (Exception ex)
@@ -62,12 +56,22 @@ public partial class AddBookViewModel : ObservableObject
         {
             if (!(string.IsNullOrEmpty(BookTitle) && string.IsNullOrEmpty(BookAuthor)))
             {
+                string uploadedFilePath = null;
+                if (!string.IsNullOrEmpty(ImageUrl))
+                {
+                    // Upload the file to Supabase bucket
+                    using var fileStream = File.OpenRead(ImageUrl);
+                    var extension = Path.GetExtension(ImageUrl);
+                    uploadedFilePath = await _storageService.UploadFileAsync(_bucket, $"book-{BookTitle}{extension}", fileStream);
+
+                }
+
                 Book book = new()
                 {
                     Title = BookTitle,
                     Author = BookAuthor,
                     IsFinished = BookIsFinished,
-                    ImageUrl = ImageUrl
+                    ImageUrl = uploadedFilePath
                 };
                 await _dataService.CreateBook(book);
 
