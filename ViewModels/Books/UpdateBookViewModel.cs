@@ -1,7 +1,8 @@
-﻿using MyApp.Models;
-using MyApp.Services;
-using CommunityToolkit.Mvvm.ComponentModel;
+﻿using CommunityToolkit.Mvvm.ComponentModel;
 using CommunityToolkit.Mvvm.Input;
+using CommunityToolkit.Mvvm.Messaging;
+using MyApp.Models;
+using MyApp.Services;
 
 namespace MyApp.ViewModels;
 
@@ -19,17 +20,23 @@ public partial class UpdateBookViewModel : ObservableObject
     }
 
     [RelayCommand]
-    private async Task UpdateBook(Book b)
+    private async Task UpdateBook()
     {
-        if (!string.IsNullOrEmpty(b.Title))
+        if (!string.IsNullOrEmpty(Book.Title))
         {
-            await _dataService.UpdateBook(b);
+            await _dataService.UpdateBook(Book);
+
+            // Send a message to notify that the book list should be refreshed
+            WeakReferenceMessenger.Default.Send(this, "RefreshBooks");
 
             await Shell.Current.GoToAsync("..");
+
+
         }
         else
         {
             await Shell.Current.DisplayAlert("Error", "No title!", "OK");
         }
+
     }
 }
