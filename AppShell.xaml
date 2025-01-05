@@ -16,5 +16,4 @@
         Title="Books"
         ContentTemplate="{DataTemplate views:BooksListingPage}"
         Route="BooksListingPage" />
-
 </Shell>

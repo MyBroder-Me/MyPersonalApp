@@ -21,4 +21,7 @@ public class Book : BaseModel
 
     [Column("is_finished")]
     public bool IsFinished { get; set; }
+
+    [Column("image_url")]
+    public string ImageUrl { get; set; }
 }

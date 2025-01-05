@@ -51,7 +51,12 @@
                             <RoundRectangle CornerRadius="10,10,10,10" />
                         </Border.StrokeShape>
                         <Grid RowDefinitions="Auto,*" RowSpacing="4">
-
+                            <Image
+                                Grid.Row="0"
+                                Source="{Binding ImageUrl}"
+                                Aspect="AspectFill"
+                                HeightRequest="150"
+                                WidthRequest="150" />
                             <Grid Grid.Row="1" RowDefinitions="Auto,Auto,Auto">
                                 <Label
                                     Grid.Row="0"
