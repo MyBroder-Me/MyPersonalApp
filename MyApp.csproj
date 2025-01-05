@@ -74,25 +74,25 @@
 	</ItemGroup>
 
 	<ItemGroup>
-	  <Compile Update="Views\AddBookPage.xaml.cs">
+	  <Compile Update="Views\Books\AddBookPage.xaml.cs">
 	    <DependentUpon>AddBookPage.xaml</DependentUpon>
 	  </Compile>
-	  <Compile Update="Views\BooksListingPage.xaml.cs">
+	  <Compile Update="Views\Books\BooksListingPage.xaml.cs">
 	    <DependentUpon>BooksListingPage.xaml</DependentUpon>
 	  </Compile>
-	  <Compile Update="Views\UpdateBookPage.xaml.cs">
+	  <Compile Update="Views\Books\UpdateBookPage.xaml.cs">
 	    <DependentUpon>UpdateBookPage.xaml</DependentUpon>
 	  </Compile>
 	</ItemGroup>
 
 	<ItemGroup>
-	  <MauiXaml Update="Views\AddBookPage.xaml">
+	  <MauiXaml Update="Views\Books\AddBookPage.xaml">
 	    <Generator>MSBuild:Compile</Generator>
 	  </MauiXaml>
-	  <MauiXaml Update="Views\BooksListingPage.xaml">
+	  <MauiXaml Update="Views\Books\BooksListingPage.xaml">
 	    <Generator>MSBuild:Compile</Generator>
 	  </MauiXaml>
-	  <MauiXaml Update="Views\UpdateBookPage.xaml">
+	  <MauiXaml Update="Views\Books\UpdateBookPage.xaml">
 	    <Generator>MSBuild:Compile</Generator>
 	  </MauiXaml>
 	</ItemGroup>
