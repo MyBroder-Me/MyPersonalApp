@@ -34,14 +34,27 @@ jobs:
     - name: Build Release
       run: dotnet build --configuration Release --no-restore
 
-    - name: Publish Release
+    - name: Publish Release iOS
       run: |
-        mkdir -p ./publish
-        dotnet publish --configuration Release --output ./publish
-        
+        mkdir -p ./publish-ios
+        dotnet publish --configuration Release --framework net9.0-ios --output ./publish-ios
+
+    - name: Publish Release Android
+      run: |
+        mkdir -p ./publish-android
+        dotnet publish --configuration Release --framework net9.0-android --output ./publish-android
+  
+    - name: Build and publish Windows
+      run: |
+        mkdir -p ./publish-windows
+        dotnet publish --configuration Release --framework net9.0-windows --output ./publish-windows
+  
     - name: Create GitHub Release
       uses: softprops/action-gh-release@v1
       with:
-        files: ./output/*
+        files: |
+          ./publish-ios/*
+          ./publish-android/*
+          ./publish-windows/*
       env:
         GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
