@@ -4,6 +4,7 @@ on:
     types: [opened, reopened, ready_for_review]
 jobs:
   auto-assign:
+    permissions: write-all
     runs-on: ubuntu-latest
     steps:
       - name: Auto Assign Action
