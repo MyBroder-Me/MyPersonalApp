@@ -19,11 +19,11 @@ public partial class UpdateBookViewModel : ObservableObject
     }
 
     [RelayCommand]
-    private async Task UpdateBook()
+    private async Task UpdateBook(Book b)
     {
-        if (!string.IsNullOrEmpty(Book.Title))
+        if (!string.IsNullOrEmpty(b.Title))
         {
-            await _dataService.UpdateBook(Book);
+            await _dataService.UpdateBook(b);
 
             await Shell.Current.GoToAsync("..");
         }
