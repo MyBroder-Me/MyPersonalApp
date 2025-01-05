@@ -54,7 +54,7 @@ public partial class AddBookViewModel : ObservableObject
     {
         try
         {
-            if (!string.IsNullOrEmpty(BookTitle))
+            if (!(string.IsNullOrEmpty(BookTitle) && string.IsNullOrEmpty(BookAuthor)))
             {
                 string uploadedFilePath = null;
                 if (!string.IsNullOrEmpty(ImageUrl))
@@ -87,5 +87,17 @@ public partial class AddBookViewModel : ObservableObject
             await Shell.Current.DisplayAlert("Error", ex.Message, "OK");
         }
 
+    }
+
+    public void OnNavigatedTo()
+    {
+        ResetFields();
+    }
+    private void ResetFields()
+    {
+        BookTitle = string.Empty;
+        BookAuthor = string.Empty;
+        BookIsFinished = false;
+        ImageUrl = string.Empty;
     }
 }
