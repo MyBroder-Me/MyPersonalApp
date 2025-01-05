@@ -13,16 +13,12 @@
         Margin="20"
         RowDefinitions="Auto,*"
         RowSpacing="10">
-        <Grid Grid.Row="0" ColumnDefinitions="*,Auto, Auto">
+        <Grid Grid.Row="0" ColumnDefinitions="*,Auto,Auto" ColumnSpacing="20">
             <Label
                 Grid.Column="0"
                 FontAttributes="Bold"
                 FontSize="Title"
                 Text="Books Tracker" />
-            <HorizontalStackLayout
-                Grid.Column="1"
-                Spacing="10"
-                HorizontalOptions="End">
             <Button
                 Grid.Column="1"
                 Background="#3ece8e"
@@ -31,13 +27,13 @@
                 Text="Add"
                 TextColor="#eff5f3" />
             <Button
+                
                 Grid.Column="2"
                 Background="#3ece8e"
                 Command="{Binding GetBooksCommand}"
                 HorizontalOptions="End"
                 Text="show"
                 TextColor="#eff5f3" />
-            </HorizontalStackLayout>
         </Grid>
 
         <CollectionView Grid.Row="1" ItemsSource="{Binding Books}">
