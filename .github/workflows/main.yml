@@ -1,9 +1,11 @@
 name: App releases
 
 on:
-  push:
+  pull_request:
     branches:
-      - main  # Solo en la rama 'main'
+      - main # main only
+    types:
+      - closed
 
 jobs:
   if_merged:
