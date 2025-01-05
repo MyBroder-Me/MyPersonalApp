@@ -101,4 +101,8 @@
 	  </MauiXaml>
 	</ItemGroup>
 
+	<ItemGroup>
+	  <None Include=".github\PULL_REQUEST_TEMPLATE\template.md" />
+	</ItemGroup>
+
 </Project>
