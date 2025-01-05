@@ -1,7 +1,7 @@
-﻿using MyApp.Models;
-using MyApp.Services;
-using CommunityToolkit.Mvvm.ComponentModel;
+﻿using CommunityToolkit.Mvvm.ComponentModel;
 using CommunityToolkit.Mvvm.Input;
+using MyApp.Models;
+using MyApp.Services;
 using System.Collections.ObjectModel;
 
 namespace MyApp.ViewModels;
@@ -63,8 +63,11 @@ public partial class BooksListingViewModel : ObservableObject
     }
 
     [RelayCommand]
-    private async Task UpdateBook(Book book) => await Shell.Current.GoToAsync("UpdateBookPage", new Dictionary<string, object>
+    private async Task UpdateBook(Book book)
     {
-        {"BookObject", book }
-    });
+        await Shell.Current.GoToAsync("UpdateBookPage", new Dictionary<string, object>
+        {
+            {"BookObject", book }
+        });
+    }
 }
