@@ -29,8 +29,17 @@ public static class MauiProgram
 
         var supabaseUrl = configuration["Supabase:Url"];
         var supabaseAnonKey = configuration["Supabase:AnonKey"];
+        var supabaseAdminKey = configuration["Supabase:AdminKey"];
+
         builder.Services.AddSingleton(provider =>
-            new Supabase.Client(supabaseUrl!, supabaseAnonKey));
+        {
+            var client = new Supabase.Client(supabaseUrl!, supabaseAdminKey!);
+            client.InitializeAsync().Wait();
+            return client;
+        });
+
+        builder.Services.AddSingleton<IDataService, DataService>();
+        builder.Services.AddSingleton<IStorageService, StorageService>();
 
         builder.Services.AddSingleton<BooksListingViewModel>();
         builder.Services.AddSingleton<AddBookViewModel>();
@@ -39,15 +48,6 @@ public static class MauiProgram
         builder.Services.AddSingleton<BooksListingPage>();
         builder.Services.AddTransient<AddBookPage>();
         builder.Services.AddTransient<UpdateBookPage>();
-
-        builder.Services.AddSingleton<IDataService, DataService>();
-        // Register services
-        builder.Services.AddSingleton<IStorageService>(sp =>
-        {
-            var storageService = new SupabaseStorageService(supabaseUrl!, supabaseAnonKey!);
-            storageService.InitializeAsync().Wait();
-            return storageService;
-        });
 
 #if DEBUG
         builder.Logging.AddDebug();

@@ -9,7 +9,7 @@ public partial class AddBookViewModel : ObservableObject
 {
     private readonly IDataService _dataService;
     private readonly IStorageService _storageService;
-
+    private readonly string _bucket = "books_bucket";
 
     [ObservableProperty]
     private string _bookTitle;
@@ -41,7 +41,8 @@ public partial class AddBookViewModel : ObservableObject
             {
                 // Upload the file to Supabase bucket
                 using var fileStream = await result.OpenReadAsync();
-                var uploadedFilePath = await _storageService.UploadFileAsync("your-bucket-name", result.FileName, fileStream);
+                var extension = result.FileName.Split('.').Last();
+                var uploadedFilePath = await _storageService.UploadFileAsync(_bucket, $"book-{System.Guid.NewGuid()}.{extension}", fileStream);
 
                 // Set the ImageUrl property to the uploaded file path
                 ImageUrl = uploadedFilePath;
