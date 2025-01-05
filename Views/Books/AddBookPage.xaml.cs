@@ -8,4 +8,14 @@ public partial class AddBookPage : ContentPage
         InitializeComponent();
         BindingContext = addBookViewModel;
     }
+
+    protected override void OnAppearing()
+    {
+        base.OnAppearing();
+        if (BindingContext is AddBookViewModel viewModel)
+        {
+            viewModel.OnNavigatedTo();
+        }
+    }
+
 }
