@@ -8,4 +8,4 @@ Provide code snippets or screenshots as needed.
 Provide links to the related issues or feature requests.  
 
 ### Additional Notes  
-Include any extra information or considerations for reviewers, such as impacted areas of the codebase.  
+Include any extra information or considerations for reviewers, such as impacted areas of the codebase.
