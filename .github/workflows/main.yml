@@ -18,7 +18,7 @@ jobs:
     - name: Setup .NET
       uses: actions/setup-dotnet@v4
       with:
-        dotnet-version: 9.0.x 
+        dotnet-version: 9.0.x
 
     - name: Select Xcode 16.1
       run: sudo xcode-select -s /Applications/Xcode_16.1.app
@@ -27,6 +27,7 @@ jobs:
       run: |
         dotnet workload install maui-android
         dotnet workload install maui-ios
+        dotnet workload install maui-maccatalyst  # Asegúrate de que también esté instalado
 
     - name: Restore dependencies
       run: dotnet restore
@@ -43,18 +44,40 @@ jobs:
       run: |
         mkdir -p ./publish-android
         dotnet publish --configuration Release --framework net9.0-android --output ./publish-android
-  
-    - name: Build and publish Windows
-      run: |
-        mkdir -p ./publish-windows
-        dotnet publish --configuration Release --framework net9.0-windows --output ./publish-windows
-  
-    - name: Create GitHub Release
-      uses: softprops/action-gh-release@v1
-      with:
-        files: |
-          ./publish-ios/*
-          ./publish-android/*
-          ./publish-windows/*
-      env:
-        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+
+  build_and_publish_windows:
+    needs: if_merged
+    runs-on: windows-latest  # Cambiar a Windows para publicar Windows
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Setup .NET
+        uses: actions/setup-dotnet@v4
+        with:
+          dotnet-version: 9.0.x
+
+      - name: Restore dependencies
+        run: dotnet restore
+
+      - name: Publish Release Windows
+        run: |
+          mkdir -p ./publish-windows
+          dotnet publish --configuration Release --framework net9.0-windows --output ./publish-windows
+
+  create_release:
+    needs: [if_merged, build_and_publish_windows]
+    runs-on: macos-latest
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+        
+      - name: Create GitHub Release
+        uses: softprops/action-gh-release@v1
+        with:
+          files: |
+            ./publish-ios/*
+            ./publish-android/*
+            ./publish-windows/*
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
