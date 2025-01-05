@@ -13,6 +13,28 @@
             <CheckBox IsChecked="{Binding BookIsFinished}" />
             <Label Text="Have you finished reading this book?" VerticalOptions="Center" />
         </HorizontalStackLayout>
+        <Frame
+            BorderColor="Gray"
+            CornerRadius="10"
+            HeightRequest="150"
+            HorizontalOptions="FillAndExpand"
+            VerticalOptions="Center"
+            BackgroundColor="LightGray">
+        <Label
+            Text="Drop image/video here"
+            HorizontalOptions="Center"
+            VerticalOptions="Center" />
+        </Frame>
+        <Button
+            Text="Select File"
+            Command="{Binding SelectFileCommand}" />
+        <!-- Image preview -->
+        <Image
+            Source="{Binding ImageUrl}"
+            Aspect="AspectFill"
+            HeightRequest="150"
+            WidthRequest="150"
+            IsVisible="{Binding ImageUrl, Converter={StaticResource NullToBoolConverter}}" />
         <Button
             Background="#3ece8e"
             Command="{Binding AddBookCommand}"

@@ -4,7 +4,6 @@ using Microsoft.Extensions.Logging;
 using MyApp.Services;
 using MyApp.ViewModels;
 using MyApp.Views;
-using Supabase;
 
 namespace MyApp;
 
@@ -31,7 +30,7 @@ public static class MauiProgram
         var supabaseUrl = configuration["Supabase:Url"];
         var supabaseAnonKey = configuration["Supabase:AnonKey"];
         builder.Services.AddSingleton(provider =>
-            new Supabase.Client(supabaseUrl, supabaseAnonKey));
+            new Supabase.Client(supabaseUrl!, supabaseAnonKey));
 
         builder.Services.AddSingleton<BooksListingViewModel>();
         builder.Services.AddSingleton<AddBookViewModel>();
@@ -42,6 +41,13 @@ public static class MauiProgram
         builder.Services.AddTransient<UpdateBookPage>();
 
         builder.Services.AddSingleton<IDataService, DataService>();
+        // Register services
+        builder.Services.AddSingleton<IStorageService>(sp =>
+        {
+            var storageService = new SupabaseStorageService(supabaseUrl!, supabaseAnonKey!);
+            storageService.InitializeAsync().Wait();
+            return storageService;
+        });
 
 #if DEBUG
         builder.Logging.AddDebug();
