@@ -19,6 +19,8 @@ public partial class AddBookViewModel : ObservableObject
     private bool _bookIsFinished;
     [ObservableProperty]
     private string _imageUrl;
+    [ObservableProperty]
+    private string _eBookUrl;
 
     public AddBookViewModel(IDataService dataService, IStorageService storageService)
     {
@@ -31,20 +33,34 @@ public partial class AddBookViewModel : ObservableObject
     {
         try
         {
+            var customFileType = new FilePickerFileType(new Dictionary<DevicePlatform, IEnumerable<string>>
+        {
+            { DevicePlatform.iOS, new[] { "public.image", "com.adobe.pdf", "org.idpf.epub-container" } }, // UTType values
+            { DevicePlatform.Android, new[] { "image/*", "application/pdf", "application/epub+zip" } }, // MIME types
+            { DevicePlatform.WinUI, new[] { ".jpg", ".jpeg", ".png", ".pdf", ".epub" } }, // file extensions
+        });
+
             var result = await FilePicker.Default.PickAsync(new PickOptions
             {
-                PickerTitle = "Please select an image or video file",
-                FileTypes = FilePickerFileType.Images // You can customize this to allow videos as well
+                PickerTitle = "Please select an image or PDF file",
+                FileTypes = customFileType
             });
 
             if (result != null)
             {
-                ImageUrl = result.FullPath;
+                var extension = Path.GetExtension(result.FullPath).ToLower();
+                if (extension == ".jpg" || extension == ".jpeg" || extension == ".png")
+                {
+                    ImageUrl = result.FullPath;
+                }
+                else if (extension == ".pdf")
+                {
+                    EBookUrl = result.FullPath;
+                }
             }
         }
         catch (Exception ex)
         {
-            // Handle any exceptions that occur during file picking
             await Shell.Current.DisplayAlert("Error", ex.Message, "OK");
         }
     }
@@ -56,14 +72,21 @@ public partial class AddBookViewModel : ObservableObject
         {
             if (!(string.IsNullOrEmpty(BookTitle) && string.IsNullOrEmpty(BookAuthor)))
             {
-                string uploadedFilePath = null;
+                string uploadedImgPath = null;
+                string uploadedEbookPath = null;
                 if (!string.IsNullOrEmpty(ImageUrl))
                 {
                     // Upload the file to Supabase bucket
                     using var fileStream = File.OpenRead(ImageUrl);
                     var extension = Path.GetExtension(ImageUrl);
-                    uploadedFilePath = await _storageService.UploadFileAsync(_bucket, $"book-{BookTitle}{extension}", fileStream);
-
+                    uploadedImgPath = await _storageService.UploadFileAsync(_bucket, $"images/book-{BookTitle}{extension}", fileStream);
+                }
+                if (!string.IsNullOrEmpty(EBookUrl))
+                {
+                    // Upload the file to Supabase bucket
+                    using var fileStream = File.OpenRead(EBookUrl);
+                    var extension = Path.GetExtension(EBookUrl);
+                    uploadedEbookPath = await _storageService.UploadFileAsync(_bucket, $"ebook/book-{BookTitle}{extension}", fileStream);
                 }
 
                 Book book = new()
@@ -71,7 +94,8 @@ public partial class AddBookViewModel : ObservableObject
                     Title = BookTitle,
                     Author = BookAuthor,
                     IsFinished = BookIsFinished,
-                    ImageUrl = uploadedFilePath
+                    ImageUrl = uploadedImgPath,
+                    EBookUrl = uploadedEbookPath
                 };
                 await _dataService.CreateBook(book);
 
@@ -95,6 +119,18 @@ public partial class AddBookViewModel : ObservableObject
         await Shell.Current.GoToAsync("..");
     }
 
+    [RelayCommand]
+    private void RemoveImage()
+    {
+        ImageUrl = null;
+    }
+
+    [RelayCommand]
+    private void RemoveEBook()
+    {
+        EBookUrl = null;
+    }
+
     public void OnNavigatedTo()
     {
         ResetFields();
@@ -105,5 +141,6 @@ public partial class AddBookViewModel : ObservableObject
         BookAuthor = string.Empty;
         BookIsFinished = false;
         ImageUrl = string.Empty;
+        EBookUrl = string.Empty;
     }
 }
