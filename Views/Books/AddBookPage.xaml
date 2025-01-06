@@ -6,26 +6,43 @@
     xmlns:viewmodel="clr-namespace:MyApp.ViewModels"
     Title="Add Book"
     x:DataType="viewmodel:AddBookViewModel">
-    <VerticalStackLayout Margin="20">
-        <Entry Placeholder="Title" Text="{Binding BookTitle}" />
-        <Entry Placeholder="Author" Text="{Binding BookAuthor}" />
-        <HorizontalStackLayout>
-            <CheckBox IsChecked="{Binding BookIsFinished}" />
-            <Label Text="Have you finished reading this book?" VerticalOptions="Center" />
-        </HorizontalStackLayout>
-        <Button
-            Text="Select File"
-            Command="{Binding SelectFileCommand}" />
-        <!-- Image preview -->
-        <Image
-            Source="{Binding ImageUrl}"
-            Aspect="AspectFit"
-            HeightRequest="150"
-            IsVisible="{Binding ImageUrl, Converter={StaticResource NullToBoolConverter}}" />
-        <Button
-            Background="#3ece8e"
-            Command="{Binding AddBookCommand}"
-            Text="Add Book"
-            TextColor="#eff5f3" />
-    </VerticalStackLayout>
+    <Grid>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="*" />
+            <RowDefinition Height="Auto" />
+        </Grid.RowDefinitions>
+        <VerticalStackLayout Margin="20" Grid.Row="0">
+            <Entry Placeholder="Title" Text="{Binding BookTitle}" />
+            <Entry Placeholder="Author" Text="{Binding BookAuthor}" />
+            <HorizontalStackLayout>
+                <CheckBox IsChecked="{Binding BookIsFinished}" />
+                <Label Text="Have you finished reading this book?" VerticalOptions="Center" />
+            </HorizontalStackLayout>
+            <Button
+                Margin="0,0,0,10"
+                Text="Select File"
+                Command="{Binding SelectFileCommand}" />
+            <!-- Image preview -->
+            <Image
+                Source="{Binding ImageUrl}"
+                Aspect="AspectFit"
+                MaximumHeightRequest="300"
+                WidthRequest="{Binding Source={x:Reference ContentPage}, Path=Width}"
+                IsVisible="{Binding ImageUrl, Converter={StaticResource NullToBoolConverter}}" />
+        </VerticalStackLayout>
+        <Grid HeightRequest="80" Grid.Row="1" ColumnDefinitions="*,*" HorizontalOptions="FillAndExpand" ColumnSpacing="10" Padding="10">
+            <Button
+                Grid.Column="0"
+                BackgroundColor="#3ece8e"
+                Command="{Binding AddBookCommand}"
+                Text="Add Book"
+                TextColor="#eff5f3" />
+            <Button
+                Grid.Column="1"
+                BackgroundColor="Red"
+                Command="{Binding CancelCommand}"
+                Text="Cancel"
+                TextColor="#eff5f3" />
+        </Grid>
+    </Grid>
 </ContentPage>
