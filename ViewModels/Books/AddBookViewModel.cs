@@ -119,6 +119,18 @@ public partial class AddBookViewModel : ObservableObject
         await Shell.Current.GoToAsync("..");
     }
 
+    [RelayCommand]
+    private void RemoveImage()
+    {
+        ImageUrl = null;
+    }
+
+    [RelayCommand]
+    private void RemoveEBook()
+    {
+        EBookUrl = null;
+    }
+
     public void OnNavigatedTo()
     {
         ResetFields();
