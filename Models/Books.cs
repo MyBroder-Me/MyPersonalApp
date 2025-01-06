@@ -24,4 +24,7 @@ public class Book : BaseModel
 
     [Column("image_url")]
     public string ImageUrl { get; set; }
+
+    [Column("ebook_url")]
+    public string EBookUrl { get; set; }
 }
