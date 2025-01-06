@@ -113,6 +113,12 @@ public partial class AddBookViewModel : ObservableObject
 
     }
 
+    [RelayCommand]
+    private async Task Cancel()
+    {
+        await Shell.Current.GoToAsync("..");
+    }
+
     public void OnNavigatedTo()
     {
         ResetFields();

@@ -47,7 +47,8 @@
         <Image
             Source="{Binding ImageUrl}"
             Aspect="AspectFit"
-            MaximumHeightRequest="150"
+            MaximumHeightRequest="300"
+            WidthRequest="{Binding Source={x:Reference ContentPage}, Path=Width}"
             IsVisible="{Binding ImageUrl}">
             <Image.Triggers>
                 <DataTrigger TargetType="Image" Binding="{Binding ImageUrl}" Value="{x:Null}">
@@ -58,10 +59,19 @@
                 </DataTrigger>
             </Image.Triggers>
         </Image>
-        <Button
-            Background="#3ece8e"
-            Command="{Binding AddBookCommand}"
-            Text="Add Book"
-            TextColor="#eff5f3" />
+        <Grid HeightRequest="80" Grid.Row="1" ColumnDefinitions="*,*" HorizontalOptions="FillAndExpand" ColumnSpacing="10" Padding="10">
+            <Button
+                Grid.Column="0"
+                BackgroundColor="#3ece8e"
+                Command="{Binding AddBookCommand}"
+                Text="Add Book"
+                TextColor="#eff5f3" />
+            <Button
+                Grid.Column="1"
+                BackgroundColor="Red"
+                Command="{Binding CancelCommand}"
+                Text="Cancel"
+                TextColor="#eff5f3" />
+        </Grid>
     </VerticalStackLayout>
 </ContentPage>
