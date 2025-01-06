@@ -42,14 +42,14 @@
                         <Border.StrokeShape>
                             <RoundRectangle CornerRadius="10,10,10,10" />
                         </Border.StrokeShape>
-                        <Grid RowDefinitions="Auto,*" RowSpacing="4">
+                        <Grid ColumnDefinitions="Auto,*" ColumnSpacing="4">
                             <Image
-                                Grid.Row="0"
+                                Grid.Column="0"
                                 Source="{Binding ImageUrl}"
                                 Aspect="AspectFill"
-                                HeightRequest="150"
+                                HeightRequest="200"
                                 WidthRequest="150" />
-                            <Grid Grid.Row="1" RowDefinitions="Auto,Auto,Auto">
+                            <Grid Grid.Column="1" RowDefinitions="Auto,Auto,Auto, Auto" HorizontalOptions="Start" Margin="10, 0, 0, 0">
                                 <Label
                                     Grid.Row="0"
                                     FontAttributes="Bold"
@@ -79,14 +79,12 @@
                                         CommandParameter="{Binding .}"
                                         Text="Delete"
                                         TextColor="#eff5f3" />
-                                    <Label
-                                        Grid.Column="2"
-                                        HorizontalOptions="End"
+                                </Grid>
+                                <Label
+                                        Grid.Row="3"
                                         Text="{Binding IsFinished, Converter={StaticResource BoolToObjectConverter}}"
                                         LineBreakMode="TailTruncation"
-                                        TextColor="#eff5f3"
-                                        VerticalOptions="Center" />
-                                </Grid>
+                                        TextColor="#eff5f3"/>
                             </Grid>
                         </Grid>
                     </Border>
