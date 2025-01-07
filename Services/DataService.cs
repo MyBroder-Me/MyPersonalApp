@@ -12,11 +12,16 @@ public class DataService : IDataService
     {
         _supabaseClient = supabaseClient;
     }
-    public async Task<IEnumerable<Book>> GetBooks()
+
+    public async Task<IEnumerable<Book>> GetBooks(int pageNumber, int pageSize)
     {
-        var response = await _supabaseClient.From<Book>().Get();
-        Console.WriteLine(response);
-        return response.Models.OrderByDescending(b => b.CreatedAt);
+        var response = await _supabaseClient
+            .From<Book>()
+            .Order(b => b.CreatedAt, Supabase.Postgrest.Constants.Ordering.Descending)
+            .Range((pageNumber - 1) * pageSize, (pageNumber * pageSize) - 1)
+            .Get();
+
+        return response.Models;
     }
 
     public async Task CreateBook(Book book)
