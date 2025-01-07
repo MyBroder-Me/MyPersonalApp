@@ -14,7 +14,7 @@ public partial class BooksListingViewModel : ObservableObject
     private int _currentPage = 1;
     private const int PageSize = 10;
 
-    public ObservableCollection<Book> Books { get; set; } = new();
+    public ObservableCollection<Book> Books { get; set; } = [];
 
     public BooksListingViewModel(IDataService dataService, IStorageService storageService)
     {
@@ -63,8 +63,8 @@ public partial class BooksListingViewModel : ObservableObject
         {
             try
             {
-                var imagePath = GetImagePath(book.ImageUrl);
-                await _storageService.DeleteFileAsync(_bucket, imagePath);
+                await _storageService.DeleteFileAsync(_bucket, book.ImageUrl, book, "img", true);
+                await _storageService.DeleteFileAsync(_bucket, book.EBookUrl, book, "pdf", true);
                 await _dataService.DeleteBook(book.Id);
                 await GetBooks();
             }
