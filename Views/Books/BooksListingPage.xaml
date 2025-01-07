@@ -6,9 +6,8 @@
     xmlns:model="clr-namespace:MyApp.Models"
     xmlns:toolkit="http://schemas.microsoft.com/dotnet/2022/maui/toolkit"
     xmlns:viewmodel="clr-namespace:MyApp.ViewModels"
-    x:DataType="viewmodel:BooksListingViewModel">
-
-
+    x:DataType="viewmodel:BooksListingViewModel"
+    BindingContext="{Binding Source={RelativeSource Self}, Path=BindingContext}">
     <Grid
         Margin="20"
         RowDefinitions="Auto,*"
@@ -49,7 +48,7 @@
                                 Aspect="AspectFill"
                                 HeightRequest="200"
                                 WidthRequest="150" />
-                            <Grid Grid.Column="1" RowDefinitions="Auto,Auto,Auto, Auto" HorizontalOptions="Start" Margin="10, 0, 0, 0">
+                            <Grid Grid.Column="1" RowDefinitions="Auto,Auto,Auto,Auto" HorizontalOptions="Start" Margin="10,0,0,0">
                                 <Label
                                     Grid.Row="0"
                                     FontAttributes="Bold"
@@ -63,7 +62,7 @@
                                 <Grid
                                     Grid.Row="2"
                                     Margin="0,5"
-                                    ColumnDefinitions="Auto,Auto,*">
+                                    ColumnDefinitions="Auto,Auto,Auto">
                                     <Button
                                         Grid.Column="0"
                                         BackgroundColor="#4A88DA"
@@ -79,12 +78,22 @@
                                         CommandParameter="{Binding .}"
                                         Text="Delete"
                                         TextColor="#eff5f3" />
+                                    <Button
+                                        Grid.Column="2"
+                                        Margin="8,0"
+                                        BackgroundColor="#4CAF50"
+                                        Command="{Binding Source={RelativeSource AncestorType={x:Type viewmodel:BooksListingViewModel}}, Path=DownloadBookCommand}"
+                                        CommandParameter="{Binding .}"
+                                        Text="Download"
+                                        TextColor="#eff5f3"
+                                        IsVisible="{Binding EBookUrl, Converter={StaticResource StringNullOrEmptyToVisibilityConverter}}">
+                                    </Button>
                                 </Grid>
                                 <Label
-                                        Grid.Row="3"
-                                        Text="{Binding IsFinished, Converter={StaticResource BoolToObjectConverter}}"
-                                        LineBreakMode="TailTruncation"
-                                        TextColor="#eff5f3"/>
+                                    Grid.Row="3"
+                                    Text="{Binding IsFinished, Converter={StaticResource BoolToObjectConverter}}"
+                                    LineBreakMode="TailTruncation"
+                                    TextColor="#eff5f3" />
                             </Grid>
                         </Grid>
                     </Border>
