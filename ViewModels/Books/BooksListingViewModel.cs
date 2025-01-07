@@ -12,7 +12,7 @@ public partial class BooksListingViewModel : ObservableObject
     private readonly IStorageService _storageService;
     private readonly string _bucket = "books_bucket";
 
-    public ObservableCollection<Book> Books { get; set; } = new();
+    public ObservableCollection<Book> Books { get; set; } = [];
 
     public BooksListingViewModel(IDataService dataService, IStorageService storageService)
     {
@@ -55,8 +55,8 @@ public partial class BooksListingViewModel : ObservableObject
         {
             try
             {
-                var imagePath = GetImagePath(book.ImageUrl);
-                await _storageService.DeleteFileAsync(_bucket, imagePath);
+                await _storageService.DeleteFileAsync(_bucket, book.ImageUrl, book, "img", true);
+                await _storageService.DeleteFileAsync(_bucket, book.EBookUrl, book, "pdf", true);
                 await _dataService.DeleteBook(book.Id);
                 await GetBooks();
             }
@@ -74,17 +74,5 @@ public partial class BooksListingViewModel : ObservableObject
         {
             {"BookObject", book }
         });
-    }
-    private string GetImagePath(string input)
-    {
-        string bucketIdentifier = "/books_bucket/";
-        int startIndex = input.IndexOf(bucketIdentifier);
-
-        if (startIndex != -1)
-        {
-            startIndex += bucketIdentifier.Length;
-            return input.Substring(startIndex);
-        }
-        return input;
     }
 }
