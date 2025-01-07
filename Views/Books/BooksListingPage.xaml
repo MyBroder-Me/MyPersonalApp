@@ -27,7 +27,12 @@
                 TextColor="#eff5f3" />
         </Grid>
 
-        <CollectionView Grid.Row="1" ItemsSource="{Binding Books}">
+        <CollectionView
+            Grid.Row="1"
+            ItemsSource="{Binding Books}"
+            RemainingItemsThreshold="0"
+            RemainingItemsThresholdReachedCommand="{Binding LoadMoreBooksCommand}"
+            ItemsUpdatingScrollMode="KeepScrollOffset">>
             <CollectionView.ItemsLayout>
                 <LinearItemsLayout ItemSpacing="4" Orientation="Vertical" />
             </CollectionView.ItemsLayout>

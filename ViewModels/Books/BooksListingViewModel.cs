@@ -11,6 +11,8 @@ public partial class BooksListingViewModel : ObservableObject
     private readonly IDataService _dataService;
     private readonly IStorageService _storageService;
     private readonly string _bucket = "books_bucket";
+    private int _currentPage = 1;
+    private const int PageSize = 10;
 
     public ObservableCollection<Book> Books { get; set; } = [];
 
@@ -20,14 +22,13 @@ public partial class BooksListingViewModel : ObservableObject
         _storageService = storageService;
     }
 
+
     [RelayCommand]
     public async Task GetBooks()
     {
-        Books.Clear();
-
         try
         {
-            var books = await _dataService.GetBooks();
+            var books = await _dataService.GetBooks(_currentPage, PageSize);
 
             if (books.Any())
             {
@@ -35,12 +36,19 @@ public partial class BooksListingViewModel : ObservableObject
                 {
                     Books.Add(book);
                 }
+                _currentPage++;
             }
         }
         catch (Exception ex)
         {
             await Shell.Current.DisplayAlert("Error", ex.Message, "OK");
         }
+    }
+
+    [RelayCommand]
+    public async Task LoadMoreBooks()
+    {
+        await GetBooks();
     }
 
     [RelayCommand]
