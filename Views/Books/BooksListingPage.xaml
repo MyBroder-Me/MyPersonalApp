@@ -62,7 +62,8 @@
                                 <Grid
                                     Grid.Row="2"
                                     Margin="0,5"
-                                    ColumnDefinitions="Auto,Auto,Auto">
+                                    ColumnDefinitions="Auto,Auto,Auto"
+                                    ColumnSpacing="5">
                                     <Button
                                         Grid.Column="0"
                                         BackgroundColor="#4A88DA"
@@ -72,7 +73,6 @@
                                         TextColor="#eff5f3" />
                                     <Button
                                         Grid.Column="1"
-                                        Margin="8,0"
                                         BackgroundColor="#F44336"
                                         Command="{Binding Source={RelativeSource AncestorType={x:Type viewmodel:BooksListingViewModel}}, Path=DeleteBookCommand}"
                                         CommandParameter="{Binding .}"
@@ -80,7 +80,6 @@
                                         TextColor="#eff5f3" />
                                     <Button
                                         Grid.Column="2"
-                                        Margin="8,0"
                                         BackgroundColor="#4CAF50"
                                         Command="{Binding Source={RelativeSource AncestorType={x:Type viewmodel:BooksListingViewModel}}, Path=DownloadBookCommand}"
                                         CommandParameter="{Binding .}"
