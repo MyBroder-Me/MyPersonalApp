@@ -75,4 +75,31 @@ public partial class BooksListingViewModel : ObservableObject
             {"BookObject", book }
         });
     }
+    private string GetImagePath(string input)
+    {
+        string bucketIdentifier = "/books_bucket/";
+        int startIndex = input.IndexOf(bucketIdentifier);
+
+        if (startIndex != -1)
+        {
+            startIndex += bucketIdentifier.Length;
+            return input.Substring(startIndex);
+        }
+        return input;
+    }
+
+    [RelayCommand]
+    private async Task DownloadBook(Book book)
+    {
+        if (!string.IsNullOrEmpty(book.EBookUrl))
+        {
+            // Logic to download the book using the URL stored in book.EBookUrl
+            await Launcher.OpenAsync(new Uri(book.EBookUrl));
+        }
+        else
+        {
+            // Handle case where the URL is not available
+            await Shell.Current.DisplayAlert("Error", "EBook URL is not available.", "OK");
+        }
+    }
 }
