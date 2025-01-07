@@ -20,7 +20,7 @@ public class StorageService : IStorageService
             fileBytes = memoryStream.ToArray();
         }
         var bucket = _supabaseClient.Storage.From(bucketName);
-        var path = await bucket.Upload(fileBytes, filePath);
+        var path = await bucket.Upload(fileBytes, filePath, new Supabase.Storage.FileOptions { CacheControl = "3600", Upsert = false });
 
         if (string.IsNullOrEmpty(path)) 
         { 
