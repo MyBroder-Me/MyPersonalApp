@@ -4,8 +4,14 @@
     xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
     xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
     xmlns:viewmodel="clr-namespace:MyApp.ViewModels"
+    xmlns:converters="clr-namespace:MyApp.Utils"
     Title="Update Book"
     x:DataType="viewmodel:UpdateBookViewModel">
+    <ContentPage.Resources>
+        <ResourceDictionary>
+            <converters:UrlConverter x:Key="UrlConverter" />
+        </ResourceDictionary>
+    </ContentPage.Resources>
     <VerticalStackLayout Margin="20">
         <Entry Placeholder="Title" Text="{Binding Book.Title}" />
         <Entry Placeholder="Author" Text="{Binding Book.Author}" />
@@ -13,6 +19,104 @@
             <CheckBox IsChecked="{Binding Book.IsFinished}" />
             <Label Text="Have you finished reading this book?" VerticalOptions="Center" />
         </HorizontalStackLayout>
+        <Grid 
+            ColumnDefinitions="*,*" 
+            HorizontalOptions="FillAndExpand" 
+            ColumnSpacing="10"
+            HeightRequest="80">
+            <Button
+            Text="Select Image"
+            BackgroundColor="AliceBlue"
+            Command="{Binding SelectFileCommand}"
+            Grid.Column="0"/>
+            <Button
+            Text="Select E-Book File"
+            BackgroundColor="LightBlue"
+            Command="{Binding SelectFileCommand}" 
+            Grid.Column="1"/>
+        </Grid>
+        <Grid
+     ColumnDefinitions="*,Auto"
+     HorizontalOptions="FillAndExpand"
+     VerticalOptions="Start"
+     Margin="0,10,0,10"
+     >
+            <Label
+         Grid.Column="0"
+         FontAttributes="Bold"
+         Margin="10"
+         FontSize="Small"
+         Text="{Binding Book.EBookUrl, Converter={StaticResource UrlConverter}, StringFormat='E-Book name: {0}'}">
+                <Label.Triggers>
+                    <DataTrigger TargetType="Label" Binding="{Binding Book.EBookUrl}" Value="{x:Null}">
+                        <Setter Property="IsVisible" Value="False" />
+                    </DataTrigger>
+                    <DataTrigger TargetType="Label" Binding="{Binding Book.EBookUrl}" Value="">
+                        <Setter Property="IsVisible" Value="False" />
+                    </DataTrigger>
+                </Label.Triggers>
+            </Label>
+            <Button
+         Grid.Column="1"
+         Text="X"
+         Background="Red"
+         FontAttributes="Bold"
+         HeightRequest="1"
+         HorizontalOptions="End"
+         VerticalOptions="Start"
+         Command="{Binding RemoveEBookCommand}"
+         IsVisible="{Binding Book.EBookUrl}" >
+                <Button.Triggers>
+                    <DataTrigger TargetType="Button" Binding="{Binding Book.EBookUrl}" Value="{x:Null}">
+                        <Setter Property="IsVisible" Value="False" />
+                    </DataTrigger>
+                    <DataTrigger TargetType="Button" Binding="{Binding Book.EBookUrl}" Value="">
+                        <Setter Property="IsVisible" Value="False" />
+                    </DataTrigger>
+                </Button.Triggers>
+            </Button>
+        </Grid>
+        <Grid
+     ColumnDefinitions="*,Auto"
+     HorizontalOptions="FillAndExpand"
+     VerticalOptions="Start"
+     Margin="0,10,0,10"
+     >
+            <Image
+         Grid.Column="0"
+         Source="{Binding Book.ImageUrl}"
+         Aspect="AspectFit"    
+         MaximumHeightRequest="300"
+         IsVisible="{Binding Book.ImageUrl}">
+                <Image.Triggers>
+                    <DataTrigger TargetType="Image" Binding="{Binding Book.ImageUrl}" Value="{x:Null}">
+                        <Setter Property="IsVisible" Value="False" />
+                    </DataTrigger>
+                    <DataTrigger TargetType="Image" Binding="{Binding Book.ImageUrl}" Value="">
+                        <Setter Property="IsVisible" Value="False" />
+                    </DataTrigger>
+                </Image.Triggers>
+            </Image>
+            <Button
+                 Grid.Column="1"
+                 Text="X"
+                 Background="Red"
+                 FontAttributes="Bold"
+                 HeightRequest="1"
+                 HorizontalOptions="End"
+                 VerticalOptions="Start"
+                 Command="{Binding RemoveImageCommand}"
+                 IsVisible="{Binding Book.ImageUrl}">
+                <Button.Triggers>
+                    <DataTrigger TargetType="Button" Binding="{Binding Book.ImageUrl}" Value="{x:Null}">
+                        <Setter Property="IsVisible" Value="False" />
+                    </DataTrigger>
+                    <DataTrigger TargetType="Button" Binding="{Binding Book.ImageUrl}" Value="">
+                        <Setter Property="IsVisible" Value="False" />
+                    </DataTrigger>
+                </Button.Triggers>
+            </Button>
+        </Grid>
         <Button
             Background="#4A88DA"
             Command="{Binding UpdateBookCommand}"

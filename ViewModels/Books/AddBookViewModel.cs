@@ -53,7 +53,7 @@ public partial class AddBookViewModel : ObservableObject
                 {
                     ImageUrl = result.FullPath;
                 }
-                else if (extension == ".pdf")
+                else if (extension == ".pdf" || extension == ".epub")
                 {
                     EBookUrl = result.FullPath;
                 }
