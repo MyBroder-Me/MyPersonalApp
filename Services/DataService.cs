@@ -33,9 +33,6 @@ public class DataService : IDataService
     public async Task UpdateBook(Book book)
     {
         await _supabaseClient.From<Book>().Where(b => b.Id == book.Id)
-            .Set(b => b.Title, book.Title)
-            .Set(b => b.Author, book.Author)
-            .Set(b => b.IsFinished, book.IsFinished)
-            .Update();
+            .Update(book);
     }
 }

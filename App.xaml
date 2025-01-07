@@ -11,6 +11,7 @@
                 <ResourceDictionary Source="Resources/Styles/Styles.xaml" />
             </ResourceDictionary.MergedDictionaries>
             <converters:StringNullOrEmptyToVisibilityConverter x:Key="StringNullOrEmptyToVisibilityConverter" />
+            <converters:UrlConverter x:Key="UrlConverter" />
         </ResourceDictionary>
     </Application.Resources>
 </Application>
