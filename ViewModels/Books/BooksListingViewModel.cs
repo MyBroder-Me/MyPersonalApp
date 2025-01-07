@@ -87,4 +87,19 @@ public partial class BooksListingViewModel : ObservableObject
         }
         return input;
     }
+
+    [RelayCommand]
+    private async Task DownloadBook(Book book)
+    {
+        if (!string.IsNullOrEmpty(book.EBookUrl))
+        {
+            // Logic to download the book using the URL stored in book.EBookUrl
+            await Launcher.OpenAsync(new Uri(book.EBookUrl));
+        }
+        else
+        {
+            // Handle case where the URL is not available
+            await Shell.Current.DisplayAlert("Error", "EBook URL is not available.", "OK");
+        }
+    }
 }
