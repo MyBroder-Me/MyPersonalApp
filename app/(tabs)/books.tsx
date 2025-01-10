@@ -1,12 +1,11 @@
 import React from 'react';
 import { Image, Platform, StyleSheet, FlatList, View } from 'react-native';
-import {TEST} from "@env";
-import { Collapsible } from '@/components/Collapsible';
+import {TEST} from '@env';
 import ParallaxScrollView from '@/components/ParallaxScrollView';
 import { ThemedText } from '@/components/ThemedText';
 import { ThemedView } from '@/components/ThemedView';
-import { IconSymbol } from '@/components/ui/IconSymbol';
 import { HelloWave } from '@/components/HelloWave';
+import image from '@/assets/images/partial-react-logo.png';
 
 const books = [
   { id: '1', title: 'To Kill a Mockingbird', author: 'Harper Lee' },
@@ -14,16 +13,16 @@ const books = [
   { id: '3', title: 'The Great Gatsby', author: 'F. Scott Fitzgerald' },
   { id: '4', title: 'The Catcher in the Rye', author: 'J.D. Salinger' },
   { id: '5', title: 'Moby-Dick', author: 'Herman Melville' },
-];
+]; 
 
 export default function BooksScreen() {
-    console.log('Config.TEST',TEST)
+  console.log('Config.TEST',TEST);
   return (
     <ParallaxScrollView
       headerBackgroundColor={{ light: '#A1CEDC', dark: '#1D3D47' }}
       headerImage={
         <Image
-          source={require('@/assets/images/partial-react-logo.png')}
+          source={image}
           style={styles.reactLogo}
         />
       }>
