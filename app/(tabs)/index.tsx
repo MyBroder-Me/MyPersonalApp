@@ -1,9 +1,10 @@
-import { Image, StyleSheet, Platform } from 'react-native';
-
+import { Image, StyleSheet } from 'react-native';
+import React from 'react';
 import { HelloWave } from '@/components/HelloWave';
 import ParallaxScrollView from '@/components/ParallaxScrollView';
 import { ThemedText } from '@/components/ThemedText';
 import { ThemedView } from '@/components/ThemedView';
+import partial_react_logo from '@/assets/images/partial-react-logo.png';
 
 export default function HomeScreen() {
   return (
@@ -11,7 +12,7 @@ export default function HomeScreen() {
       headerBackgroundColor={{ light: '#A1CEDC', dark: '#1D3D47' }}
       headerImage={
         <Image
-          source={require('@/assets/images/partial-react-logo.png')}
+          source={partial_react_logo}
           style={styles.reactLogo}
         />
       }>
