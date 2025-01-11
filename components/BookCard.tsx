@@ -3,16 +3,8 @@ import { StyleSheet, Image, useWindowDimensions } from 'react-native';
 import { Text, Divider } from '@react-native-material/core';
 import { ThemedView, ThemedViewProps } from './ThemedView';
 import { useThemeColor } from '@/hooks/useThemeColor';
+import { Book } from '@/services/repositories/bookRepo';
 
-interface Book {
-  author: string | null;
-  created_at: string;
-  ebook_url: string | null;
-  id: string;
-  image_url: string | null;
-  is_finished: boolean | null;
-  title: string;
-}
 
 interface BookCardProps extends ThemedViewProps {
   book: Book;
