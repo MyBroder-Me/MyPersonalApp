@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import { Image, Platform, StyleSheet, View, ActivityIndicator } from 'react-native';
+import { Image, Platform, StyleSheet, View, ActivityIndicator, Text, Modal, Button } from 'react-native';
 import ParallaxScrollView from '@/components/ParallaxScrollView';
 import { ThemedText } from '@/components/ThemedText';
 import { ThemedView } from '@/components/ThemedView';
@@ -7,11 +7,15 @@ import { HelloWave } from '@/components/HelloWave';
 import { GetAllBooks } from '@/services/repositories/bookRepo';
 import { Book } from '@/services/repositories/bookRepo';
 import BooksList from '@/components/BookList';
+import AddBookForm from '@/components/AddBookForm';
 import reactLogo from '@/assets/images/partial-react-logo.png';
+
+
 
 export default function BooksScreen() {
   const [books, setBooks] = useState<Book[]>([]);
   const [loading, setLoading] = useState(true);
+  const [modalVisible, setModalVisible] = useState(false);
 
   useEffect(() => {
     const fetchBooks = async () => {
@@ -27,6 +31,11 @@ export default function BooksScreen() {
 
     fetchBooks();
   }, []);
+
+  const handleAddBook = (newBook: Book) => {
+    setBooks([newBook, ...books]);
+    setModalVisible(false);
+  };
 
   if (loading) {
     return (
@@ -45,10 +54,38 @@ export default function BooksScreen() {
         />
       }>
       <ThemedView style={styles.titleContainer}>
-        <ThemedText type="title">Books!</ThemedText>
-        <HelloWave emoji="📚" />
+        <ThemedText type="title">Books!
+          <HelloWave emoji="📚" />
+        </ThemedText>
+        <ThemedView style={styles.managementButtons}>
+          <ThemedView 
+            style={[
+              styles.button,
+              styles.addButton
+            ]}
+          >
+            <Text 
+              style={styles.buttonText}
+              onPress={() => setModalVisible(true)}
+            >
+              Add Book
+            </Text>
+          </ThemedView>
+        </ThemedView>
+        
       </ThemedView>
       <BooksList books={books} />
+      <Modal
+        animationType="slide"
+        transparent={true}
+        visible={modalVisible}
+        onRequestClose={() => setModalVisible(false)}
+      >
+        <View style={styles.modalContainer}>
+          <AddBookForm onAddBook={handleAddBook} onClose={() => setModalVisible(false)} />
+          <Button title="Close" onPress={() => setModalVisible(false)} />
+        </View>
+      </Modal>
     </ParallaxScrollView>
   );
 }
@@ -67,5 +104,26 @@ const styles = StyleSheet.create({
     paddingHorizontal: 16,
     flexDirection: 'row',
     alignItems: 'center',
+    justifyContent: 'space-between',
+  },
+  managementButtons: {
+    flexDirection: 'row',
+  },
+  button: {
+    padding: 10,
+    borderRadius: 5,
+  },
+  addButton: {
+    backgroundColor: '#4CAF50',
+  },
+  buttonText: {
+    color: '#fff',
+    fontWeight: 'bold',
+  },
+  modalContainer: {
+    flex: 1,
+    justifyContent: 'center',
+    alignItems: 'center',
+    backgroundColor: 'rgba(0,0,0,0.5)',
   },
 });

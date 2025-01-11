@@ -18,9 +18,10 @@ export const GetBook = async (id: string): Promise<Book> => {
 };
 
 export const CreateBook = async (book: newBook): Promise<Book> => {
-  const { data, error } = await supabase.from('books').insert(book).returns<Book>();
+  const {data, error} = await supabase.from('books').insert(book).select().returns<Book[]>();
   if (error) throw error;
-  return data;
+  const createdBook: Book =  data[0];
+  return createdBook;
 };
 
 export const UpdateBook = async (id: string, book: updateBook): Promise<Book> => {

@@ -1,7 +1,9 @@
 import { createClient } from '@supabase/supabase-js';
 import { Database } from '@/types/database.types';
-import { EXPO_PUBLIC_SUPABASE_URL, EXPO_PUBLIC_SUPABASE_ADMIN } from '@env';
+
+const SUPABASE_URL = process.env.SUPABASE_URL as string;
+const SUPABASE_ADMIN = process.env.SUPABASE_ADMIN as string;
 
 export const supabase = createClient<Database>(
-  EXPO_PUBLIC_SUPABASE_URL, EXPO_PUBLIC_SUPABASE_ADMIN
+  SUPABASE_URL, SUPABASE_ADMIN
 );
