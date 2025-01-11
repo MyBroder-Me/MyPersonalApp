@@ -1,6 +1,6 @@
 declare module '@env' {
 
-    export const SUPABASE_URL: string;
-    export const SUPABASE_ANON: string;
-    export const SUPABASE_ADMIN: string;
+    export const EXPO_PUBLIC_SUPABASE_URL: string;
+    export const EXPO_PUBLIC_SUPABASE_ANON: string;
+    export const EXPO_PUBLIC_SUPABASE_ADMIN: string;
   }
