@@ -81,7 +81,7 @@ const AddBookForm: React.FC<AddBookFormProps> = ({ onAddBook, onUpdateBook, onCl
         value={imageUrl || ''}
         onChangeText={setImageUrl}
       />
-      <Button title="Save Book" onPress={handleSubmit} />
+      <Button title="Add Book" onPress={handleSubmit} />
     </View>
   );
 };
