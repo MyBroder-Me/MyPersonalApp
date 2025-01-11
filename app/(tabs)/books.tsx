@@ -7,7 +7,7 @@ import { HelloWave } from '@/components/HelloWave';
 import { GetAllBooks } from '@/services/repositories/bookRepo';
 import { Book } from '@/services/repositories/bookRepo';
 import BooksList from '@/components/BookList';
-import react_logo from '@/assets/images/partial-react-logo.png';
+import reactLogo from '@/assets/images/partial-react-logo.png';
 
 export default function BooksScreen() {
   const [books, setBooks] = useState<Book[]>([]);
@@ -41,7 +41,7 @@ export default function BooksScreen() {
       headerBackgroundColor={{ light: '#A1CEDC', dark: '#1D3D47' }}
       headerImage={
         <Image
-          source={react_logo}
+          source={reactLogo}
         />
       }>
       <ThemedView style={styles.titleContainer}>

@@ -4,5 +4,5 @@ import { Database } from '@/types/database.types';
 const SUPABASE_URL = process.env.SUPABASE_URL!;
 const SUPABASE_ADMIN = process.env.SUPABASE_ADMIN!;
 export const supabase = createClient<Database>(
-  SUPABASE_URL, SUPABASE_ADMIN
+  EXPO_PUBLIC_SUPABASE_URL, EXPO_PUBLIC_SUPABASE_ADMIN
 );
