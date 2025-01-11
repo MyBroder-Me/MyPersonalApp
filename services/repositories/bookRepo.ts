@@ -12,9 +12,10 @@ export const GetAllBooks = async (): Promise<Book[]> => {
 };
 
 export const GetBook = async (id: string): Promise<Book> => {
-  const { data, error } = await supabase.from('books').select('*').eq('id', id).returns<Book>();
+  const { data, error } = await supabase.from('books').select().eq('id', id).returns<Book[]>();
   if (error) throw error;
-  return data;
+  const book: Book =  data[0];
+  return book;
 };
 
 export const CreateBook = async (book: newBook): Promise<Book> => {
@@ -25,9 +26,10 @@ export const CreateBook = async (book: newBook): Promise<Book> => {
 };
 
 export const UpdateBook = async (id: string, book: updateBook): Promise<Book> => {
-  const { data, error } = await supabase.from('books').update(book).eq('id', id).returns<Book>();
+  const { data, error } = await supabase.from('books').update(book).eq('id', id).select().returns<Book[]>();
   if (error) throw error;
-  return data;
+  const updatedBook: Book = data[0];
+  return updatedBook;
 };
 
 export const DeleteBook = async (id: string): Promise<void> => {

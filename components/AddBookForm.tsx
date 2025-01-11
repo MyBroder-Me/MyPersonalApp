@@ -1,18 +1,28 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { View, TextInput, Button, StyleSheet, Alert } from 'react-native';
-import { newBook, CreateBook, Book } from '@/services/repositories/bookRepo';
+import { newBook, CreateBook, UpdateBook, Book } from '@/services/repositories/bookRepo';
 
 interface AddBookFormProps {
-  // eslint-disable-next-line no-unused-vars
   onAddBook: (book: Book) => void;
+  onUpdateBook: (book: Book) => void;
   onClose: () => void;
+  initialBook?: newBook | Book;
 }
 
-const AddBookForm: React.FC<AddBookFormProps> = ({ onAddBook, onClose }) => {
+const AddBookForm: React.FC<AddBookFormProps> = ({ onAddBook, onUpdateBook, onClose, initialBook }) => {
   const [title, setTitle] = useState('');
-  const [author, setAuthor] = useState<string | null>(null);
-  const [ebookUrl, setEbookUrl] = useState<string | null>(null);
-  const [imageUrl, setImageUrl] = useState<string | null>(null);
+  const [author, setAuthor] = useState<string | null>('');
+  const [ebookUrl, setEbookUrl] = useState<string | null>('');
+  const [imageUrl, setImageUrl] = useState<string | null>('');
+
+  useEffect(() => {
+    if (initialBook && initialBook.id) {
+      setTitle(initialBook.title);
+      if (initialBook.author) setAuthor(initialBook.author);
+      if (initialBook.ebook_url) setEbookUrl(initialBook.ebook_url);
+      if (initialBook.image_url) setImageUrl(initialBook.image_url);
+    }
+  }, [initialBook]);
 
   const handleSubmit = async () => {
     if (!title) {
@@ -20,7 +30,7 @@ const AddBookForm: React.FC<AddBookFormProps> = ({ onAddBook, onClose }) => {
       return;
     }
 
-    const newBook: newBook = {
+    const bookData: newBook = {
       title,
       author,
       ebook_url: ebookUrl,
@@ -29,12 +39,19 @@ const AddBookForm: React.FC<AddBookFormProps> = ({ onAddBook, onClose }) => {
     };
 
     try {
-      const createdBook: Book = await CreateBook(newBook);
-      onAddBook(createdBook);
+      console.log(initialBook);
+      if (initialBook && initialBook.id) {
+        const updatedBook = await UpdateBook(initialBook.id, bookData);
+        console.log('form',updatedBook);
+        onUpdateBook(updatedBook);
+      } else {
+        const createdBook = await CreateBook(bookData);
+        onAddBook(createdBook);
+      }
       onClose();
     } catch (error) {
       const errorMessage = error instanceof Error ? error.message : 'Unknown error';
-      Alert.alert('Error', `Failed to add book: ${errorMessage}`);
+      Alert.alert('Error', `Failed to save book: ${errorMessage}`);
     }
   };
 
@@ -64,9 +81,7 @@ const AddBookForm: React.FC<AddBookFormProps> = ({ onAddBook, onClose }) => {
         value={imageUrl || ''}
         onChangeText={setImageUrl}
       />
-      <Button 
-        title="Add Book"
-        onPress={handleSubmit} />
+      <Button title="Save Book" onPress={handleSubmit} />
     </View>
   );
 };

@@ -10,7 +10,9 @@ interface BookCardProps extends ThemedViewProps {
   book: Book;
   onReadEbook?: () => void;
   onToggleFinished?: () => void;
-  onEdit?: () => void;
+  // eslint-disable-next-line no-unused-vars
+  onEdit: (book:Book) => void;
+  // eslint-disable-next-line no-unused-vars
   onDelete: (id: string) => void;
 }
 
@@ -34,7 +36,19 @@ const BookCard: React.FC<BookCardProps> = ({
   const editButtonBgColor = useThemeColor({ light: '#34C759', dark: '#32D74B' }, 'text');
   const deleteButtonBgColor = useThemeColor({ light: '#FF3B30', dark: '#FF453A' }, 'text');
   const buttonTextColor = '#FFFFFF';
+  
+  const handleDelete = async () => {
+    try {
+      await DeleteBook(book.id);
+      onDelete(book.id);
+    } catch (error) {
+      Alert.alert('Failed to delete book', error instanceof Error ? error.message : 'Unknown error');
+    }
+  };
 
+  const handleEdit = () => {
+    onEdit(book);
+  };
   const styles = StyleSheet.create({
     card: {
       borderRadius: 8,
@@ -118,14 +132,6 @@ const BookCard: React.FC<BookCardProps> = ({
       gap: 8,
     },
   });
-  const handleDelete = async () => {
-    try {
-      await DeleteBook(book.id);
-      onDelete(book.id);
-    } catch (error) {
-      Alert.alert('Failed to delete book', error instanceof Error ? error.message : 'Unknown error');
-    }
-  };
   return (
     <ThemedView style={[styles.card, style]} lightColor={lightColor} darkColor={darkColor} {...otherProps}>
       {book.image_url && (
@@ -176,12 +182,12 @@ const BookCard: React.FC<BookCardProps> = ({
               style={[
                 styles.button,
                 styles.editButton,
-                !onEdit && styles.buttonDisabled
+                !handleEdit && styles.buttonDisabled
               ]}
             >
               <Text 
                 style={styles.buttonText}
-                onPress={onEdit}
+                onPress={() => handleEdit()}
               >
                 Edit
               </Text>

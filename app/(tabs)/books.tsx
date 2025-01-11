@@ -1,19 +1,19 @@
 import React, { useEffect, useState } from 'react';
-import { Image, Platform, StyleSheet, View, ActivityIndicator, Text, Modal, Button } from 'react-native';
+import { Image, Platform, StyleSheet, View, ActivityIndicator, Text } from 'react-native';
 import ParallaxScrollView from '@/components/ParallaxScrollView';
 import { ThemedText } from '@/components/ThemedText';
 import { ThemedView } from '@/components/ThemedView';
 import { HelloWave } from '@/components/HelloWave';
-import { GetAllBooks } from '@/services/repositories/bookRepo';
-import { Book } from '@/services/repositories/bookRepo';
+import { GetAllBooks, DeleteBook, Book } from '@/services/repositories/bookRepo';
 import BooksList from '@/components/BookList';
-import AddBookForm from '@/components/AddBookForm';
+import BookModal from '@/components/BookModal';
 import reactLogo from '@/assets/images/partial-react-logo.png';
 
 export default function BooksScreen() {
   const [books, setBooks] = useState<Book[]>([]);
   const [loading, setLoading] = useState(true);
   const [modalVisible, setModalVisible] = useState(false);
+  const [editingBook, setEditingBook] = useState<Book | null>(null);
 
   useEffect(() => {
     const fetchBooks = async () => {
@@ -28,15 +28,37 @@ export default function BooksScreen() {
     };
 
     fetchBooks();
-  }, []);
+  }, [books]);
 
   const handleAddBook = (newBook: Book) => {
     setBooks([newBook, ...books]);
     setModalVisible(false);
   };
 
-  const handleDeleteBook = (id: string) => {
-    setBooks(books.filter(book => book.id !== id));
+  const handleEditBook = (updatedBook: Book) => {
+    console.log('recibo libro', updatedBook);
+    setBooks(books.map(book => (book.id === updatedBook.id ? updatedBook : book)));
+    setModalVisible(false);
+  };
+
+  const handleDeleteBook = async (id: string) => {
+    try {
+      await DeleteBook(id);
+      setBooks(books.filter(book => book.id !== id));
+    } catch (error) {
+      console.error('Error deleting book:', error);
+    }
+  };
+
+  const openAddBookModal = () => {
+    setEditingBook(null);
+    setModalVisible(true);
+  };
+
+  const openEditBookModal = (book: Book) => {
+    console.log('estoy abriendo el form de editar');
+    setEditingBook(book);
+    setModalVisible(true);
   };
 
   if (loading) {
@@ -56,9 +78,7 @@ export default function BooksScreen() {
         />
       }>
       <ThemedView style={styles.titleContainer}>
-        <ThemedText type="title">Books!
-          <HelloWave emoji="📚" />
-        </ThemedText>
+        <ThemedText type="title">Books!</ThemedText>
         <ThemedView style={styles.managementButtons}>
           <ThemedView 
             style={[
@@ -68,7 +88,7 @@ export default function BooksScreen() {
           >
             <Text 
               style={styles.buttonText}
-              onPress={() => setModalVisible(true)}
+              onPress={openAddBookModal}
             >
               Add Book
             </Text>
@@ -76,18 +96,14 @@ export default function BooksScreen() {
         </ThemedView>
         <HelloWave emoji="📚" />
       </ThemedView>
-      <BooksList books={books} onDelete={handleDeleteBook} />
-      <Modal
-        animationType="slide"
-        transparent={true}
+      <BooksList books={books} onDelete={handleDeleteBook} onEdit={openEditBookModal} />
+      <BookModal
         visible={modalVisible}
-        onRequestClose={() => setModalVisible(false)}
-      >
-        <View style={styles.modalContainer}>
-          <AddBookForm onAddBook={handleAddBook} onClose={() => setModalVisible(false)} />
-          <Button title="Close" onPress={() => setModalVisible(false)} />
-        </View>
-      </Modal>
+        onClose={() => setModalVisible(false)}
+        onSave={handleAddBook}
+        onUpdateBook={handleEditBook}
+        book={editingBook}
+      />
     </ParallaxScrollView>
   );
 }
