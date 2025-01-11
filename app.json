@@ -1,6 +1,7 @@
 {
   "expo": {
     "name": "my-app",
+    "owner": "mybroderme",
     "slug": "my-app",
     "version": "1.0.0",
     "orientation": "portrait",
@@ -15,7 +16,8 @@
       "adaptiveIcon": {
         "foregroundImage": "./assets/images/adaptive-icon.png",
         "backgroundColor": "#ffffff"
-      }
+      },
+      "package": "com.mybroderme.myapp"
     },
     "web": {
       "bundler": "metro",
@@ -36,6 +38,14 @@
     ],
     "experiments": {
       "typedRoutes": true
+    },
+    "extra": {
+      "router": {
+        "origin": false
+      },
+      "eas": {
+        "projectId": "01dd8e3b-3c50-41a4-999d-f5bfb8f3c1b2"
+      }
     }
   }
 }
