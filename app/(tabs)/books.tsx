@@ -1,5 +1,14 @@
 import React, { useEffect, useState } from 'react';
-import { Image, Platform, StyleSheet, View, ActivityIndicator, Text, Modal, Button } from 'react-native';
+import {
+  Image,
+  StyleSheet,
+  View,
+  ActivityIndicator,
+  Text,
+  Modal,
+  Button,
+  useWindowDimensions,
+} from 'react-native';
 import ParallaxScrollView from '@/components/ParallaxScrollView';
 import { ThemedText } from '@/components/ThemedText';
 import { ThemedView } from '@/components/ThemedView';
@@ -8,7 +17,7 @@ import { GetAllBooks } from '@/services/repositories/bookRepo';
 import { Book } from '@/services/repositories/bookRepo';
 import BooksList from '@/components/BookList';
 import AddBookForm from '@/components/AddBookForm';
-import reactLogo from '@/assets/images/partial-react-logo.png';
+import explorer_books from '@/assets/images/explorer_books.png';
 
 export default function BooksScreen() {
   const [books, setBooks] = useState<Book[]>([]);
@@ -30,6 +39,9 @@ export default function BooksScreen() {
     fetchBooks();
   }, []);
 
+  const { width } = useWindowDimensions();
+  const isMobile = width < 768;
+  console.log(isMobile);
   const handleAddBook = (newBook: Book) => {
     setBooks([newBook, ...books]);
     setModalVisible(false);
@@ -38,6 +50,47 @@ export default function BooksScreen() {
   const handleDeleteBook = (id: string) => {
     setBooks(books.filter(book => book.id !== id));
   };
+
+  const styles = StyleSheet.create({
+    loadingContainer: {
+      flex: 1,
+      justifyContent: 'center',
+      alignItems: 'center',
+    },
+    headerImage: {
+      flex: 1,
+      justifyContent: 'center',
+      width: isMobile ? '100%' : 120,
+      height: isMobile ? 200 : 180,
+    },
+    titleContainer: {
+      paddingVertical: 24,
+      paddingHorizontal: 16,
+      flexDirection: 'row',
+      alignItems: 'center',
+      justifyContent: 'space-between',
+    },
+    managementButtons: {
+      flexDirection: 'row',
+    },
+    button: {
+      padding: 10,
+      borderRadius: 5,
+    },
+    addButton: {
+      backgroundColor: '#4CAF50',
+    },
+    buttonText: {
+      color: '#fff',
+      fontWeight: 'bold',
+    },
+    modalContainer: {
+      flex: 1,
+      justifyContent: 'center',
+      alignItems: 'center',
+      backgroundColor: 'rgba(0,0,0,0.5)',
+    },
+  });
 
   if (loading) {
     return (
@@ -50,23 +103,16 @@ export default function BooksScreen() {
   return (
     <ParallaxScrollView
       headerBackgroundColor={{ light: '#A1CEDC', dark: '#1D3D47' }}
-      headerImage={
-        <Image
-          source={reactLogo}
-        />
-      }>
+      headerImage={<Image source={explorer_books} style={styles.headerImage} />}
+    >
       <ThemedView style={styles.titleContainer}>
-        <ThemedText type="title">Books!
+        <ThemedText type="title">
+          Books!
           <HelloWave emoji="📚" />
         </ThemedText>
         <ThemedView style={styles.managementButtons}>
-          <ThemedView 
-            style={[
-              styles.button,
-              styles.addButton
-            ]}
-          >
-            <Text 
+          <ThemedView style={[styles.button, styles.addButton]}>
+            <Text
               style={styles.buttonText}
               onPress={() => setModalVisible(true)}
             >
@@ -84,48 +130,13 @@ export default function BooksScreen() {
         onRequestClose={() => setModalVisible(false)}
       >
         <View style={styles.modalContainer}>
-          <AddBookForm onAddBook={handleAddBook} onClose={() => setModalVisible(false)} />
+          <AddBookForm
+            onAddBook={handleAddBook}
+            onClose={() => setModalVisible(false)}
+          />
           <Button title="Close" onPress={() => setModalVisible(false)} />
         </View>
       </Modal>
     </ParallaxScrollView>
   );
 }
-
-const styles = StyleSheet.create({
-  loadingContainer: {
-    flex: 1,
-    justifyContent: 'center',
-    alignItems: 'center',
-  },
-  headerImage: {
-    marginTop: Platform.OS === 'ios' ? 96 : 64,
-  },
-  titleContainer: {
-    paddingVertical: 24,
-    paddingHorizontal: 16,
-    flexDirection: 'row',
-    alignItems: 'center',
-    justifyContent: 'space-between',
-  },
-  managementButtons: {
-    flexDirection: 'row',
-  },
-  button: {
-    padding: 10,
-    borderRadius: 5,
-  },
-  addButton: {
-    backgroundColor: '#4CAF50',
-  },
-  buttonText: {
-    color: '#fff',
-    fontWeight: 'bold',
-  },
-  modalContainer: {
-    flex: 1,
-    justifyContent: 'center',
-    alignItems: 'center',
-    backgroundColor: 'rgba(0,0,0,0.5)',
-  },
-});
