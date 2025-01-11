@@ -10,8 +10,6 @@ import BooksList from '@/components/BookList';
 import AddBookForm from '@/components/AddBookForm';
 import reactLogo from '@/assets/images/partial-react-logo.png';
 
-
-
 export default function BooksScreen() {
   const [books, setBooks] = useState<Book[]>([]);
   const [loading, setLoading] = useState(true);
@@ -35,6 +33,10 @@ export default function BooksScreen() {
   const handleAddBook = (newBook: Book) => {
     setBooks([newBook, ...books]);
     setModalVisible(false);
+  };
+
+  const handleDeleteBook = (id: string) => {
+    setBooks(books.filter(book => book.id !== id));
   };
 
   if (loading) {
@@ -72,9 +74,9 @@ export default function BooksScreen() {
             </Text>
           </ThemedView>
         </ThemedView>
-        
+        <HelloWave emoji="📚" />
       </ThemedView>
-      <BooksList books={books} />
+      <BooksList books={books} onDelete={handleDeleteBook} />
       <Modal
         animationType="slide"
         transparent={true}

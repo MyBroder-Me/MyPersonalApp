@@ -5,15 +5,16 @@ import BookCard from '@/components/BookCard';
 
 interface BooksListProps {
   books: Book[];
+  onDelete: (id: string) => void;
 }
 
-const BooksList: React.FC<BooksListProps> = ({ books }) => {
+const BooksList: React.FC<BooksListProps> = ({ books, onDelete }) => {
   return (
     <View style={styles.container}>
       <FlatList
         data={books}
         keyExtractor={(item) => item.id}
-        renderItem={({ item }) => <BookCard book={item} />}
+        renderItem={({ item }) => <BookCard book={item} onDelete={onDelete} />}
       />
     </View>
   );

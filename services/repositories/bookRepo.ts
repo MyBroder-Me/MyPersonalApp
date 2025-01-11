@@ -30,8 +30,7 @@ export const UpdateBook = async (id: string, book: updateBook): Promise<Book> =>
   return data;
 };
 
-export const DeleteBook = async (id: string): Promise<Book> => {
-  const { data, error } = await supabase.from('books').delete().eq('id', id).returns<Book>();
+export const DeleteBook = async (id: string): Promise<void> => {
+  const { error } = await supabase.from('books').delete().eq('id', id);
   if (error) throw error;
-  return data;
 };

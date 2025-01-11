@@ -1,9 +1,9 @@
 import React from 'react';
-import { StyleSheet, Image, useWindowDimensions } from 'react-native';
+import { StyleSheet, Image, useWindowDimensions, Alert } from 'react-native';
 import { Text, Divider } from '@react-native-material/core';
 import { ThemedView, ThemedViewProps } from './ThemedView';
 import { useThemeColor } from '@/hooks/useThemeColor';
-import { Book } from '@/services/repositories/bookRepo';
+import { Book, DeleteBook } from '@/services/repositories/bookRepo';
 
 
 interface BookCardProps extends ThemedViewProps {
@@ -11,7 +11,7 @@ interface BookCardProps extends ThemedViewProps {
   onReadEbook?: () => void;
   onToggleFinished?: () => void;
   onEdit?: () => void;
-  onDelete?: () => void;
+  onDelete: (id: string) => void;
 }
 
 const BookCard: React.FC<BookCardProps> = ({ 
@@ -118,7 +118,14 @@ const BookCard: React.FC<BookCardProps> = ({
       gap: 8,
     },
   });
-
+  const handleDelete = async () => {
+    try {
+      await DeleteBook(book.id);
+      onDelete(book.id);
+    } catch (error) {
+      Alert.alert('Failed to delete book', error instanceof Error ? error.message : 'Unknown error');
+    }
+  };
   return (
     <ThemedView style={[styles.card, style]} lightColor={lightColor} darkColor={darkColor} {...otherProps}>
       {book.image_url && (
@@ -183,12 +190,12 @@ const BookCard: React.FC<BookCardProps> = ({
               style={[
                 styles.button,
                 styles.deleteButton,
-                !onDelete && styles.buttonDisabled
+                !handleDelete && styles.buttonDisabled
               ]}
             >
               <Text 
                 style={styles.buttonText}
-                onPress={onDelete}
+                onPress={handleDelete}
               >
                 Delete
               </Text>
