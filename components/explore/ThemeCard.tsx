@@ -2,14 +2,13 @@ import React from 'react';
 import {
   StyleSheet,
   ImageBackground,
-  TouchableOpacity,
-  Linking,
   ImageSourcePropType,
   useWindowDimensions,
 } from 'react-native';
 import { ThemedView, ThemedViewProps } from '../ThemedView';
 import { ThemedText } from '../ThemedText';
 import { useThemeColor } from '@/hooks/useThemeColor';
+import { Link } from 'expo-router';
 
 interface ThemeCardProps extends ThemedViewProps {
   image: ImageSourcePropType;
@@ -31,8 +30,10 @@ const ThemeCard: React.FC<ThemeCardProps> = ({
     'text'
   );
   const overlayColor = 'rgba(0, 0, 0, 0.5)';
+
   const { width } = useWindowDimensions();
   const isMobile = width < 768;
+
   const styles = StyleSheet.create({
     card: {
       borderRadius: 8,
@@ -69,19 +70,15 @@ const ThemeCard: React.FC<ThemeCardProps> = ({
     },
   });
 
-  const handlePress = () => {
-    Linking.openURL(url!);
-  };
-
   return (
-    <TouchableOpacity onPress={handlePress}>
-      <ThemedView
-        style={[styles.card, style]}
-        lightColor={lightColor}
-        darkColor={darkColor}
-        {...otherProps}
-      >
-        {image && (
+    <ThemedView
+      style={[styles.card, style]}
+      lightColor={lightColor}
+      darkColor={darkColor}
+      {...otherProps}
+    >
+      {image && (
+        <Link href={`./${url}`}>
           <ImageBackground
             source={image}
             style={styles.imageBackground}
@@ -93,9 +90,9 @@ const ThemeCard: React.FC<ThemeCardProps> = ({
               </ThemedText>
             </ThemedView>
           </ImageBackground>
-        )}
-      </ThemedView>
-    </TouchableOpacity>
+        </Link>
+      )}
+    </ThemedView>
   );
 };
 

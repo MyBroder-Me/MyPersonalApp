@@ -11,7 +11,7 @@ const explorerData: ExplorerItem[] = [
   {
     name: 'Books',
     image: explorer_books,
-    url: 'https://localhost:8081/books'
+    url: '/books'
   }
 ];
 
