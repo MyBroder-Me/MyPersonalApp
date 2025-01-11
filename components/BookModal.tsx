@@ -4,20 +4,24 @@ import { Book, newBook } from '@/services/repositories/bookRepo';
 import AddBookForm from '@/components/AddBookForm';
 
 interface BookModalProps {
+  visible: boolean;
 
-    visible: boolean;
-  
-    onClose: () => void;
-  
-    onSave: (book: Book) => void;
+  onClose: () => void;
 
-    onUpdateBook: (book: Book) => void;
-  
-    book: Book | null;
-  
-  }
+  onSave: (book: Book) => void;
 
-const BookModal: React.FC<BookModalProps> = ({ visible, onClose, onSave, onUpdateBook, book }) => {
+  onUpdateBook: (book: Book) => void;
+
+  book: Book | null;
+}
+
+const BookModal: React.FC<BookModalProps> = ({
+  visible,
+  onClose,
+  onSave,
+  onUpdateBook,
+  book,
+}) => {
   const [initialBook, setInitialBook] = useState<newBook | Book>({
     title: '',
     author: null,
@@ -45,7 +49,6 @@ const BookModal: React.FC<BookModalProps> = ({ visible, onClose, onSave, onUpdat
     onClose();
   };
   const handleUpdate = (book: Book) => {
-    console.log('modal',book);
     onUpdateBook(book);
     onClose();
   };
@@ -58,7 +61,12 @@ const BookModal: React.FC<BookModalProps> = ({ visible, onClose, onSave, onUpdat
       onRequestClose={onClose}
     >
       <View style={styles.modalContainer}>
-        <AddBookForm onAddBook={handleSave} onClose={onClose} onUpdateBook={handleUpdate} initialBook={initialBook} />
+        <AddBookForm
+          onAddBook={handleSave}
+          onClose={onClose}
+          onUpdateBook={handleUpdate}
+          initialBook={initialBook}
+        />
         <Button title="Close" onPress={onClose} />
       </View>
     </Modal>
