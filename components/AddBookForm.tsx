@@ -3,7 +3,6 @@ import { View, TextInput, Button, StyleSheet, Alert } from 'react-native';
 import { newBook, CreateBook, Book } from '@/services/repositories/bookRepo';
 
 interface AddBookFormProps {
-  // eslint-disable-next-line no-unused-vars
   onAddBook: (book: Book) => void;
   onClose: () => void;
 }
@@ -33,7 +32,8 @@ const AddBookForm: React.FC<AddBookFormProps> = ({ onAddBook, onClose }) => {
       onAddBook(createdBook);
       onClose();
     } catch (error) {
-      const errorMessage = error instanceof Error ? error.message : 'Unknown error';
+      const errorMessage =
+        error instanceof Error ? error.message : 'Unknown error';
       Alert.alert('Error', `Failed to add book: ${errorMessage}`);
     }
   };
@@ -64,9 +64,7 @@ const AddBookForm: React.FC<AddBookFormProps> = ({ onAddBook, onClose }) => {
         value={imageUrl || ''}
         onChangeText={setImageUrl}
       />
-      <Button 
-        title="Add Book"
-        onPress={handleSubmit} />
+      <Button title="Add Book" onPress={handleSubmit} />
     </View>
   );
 };
