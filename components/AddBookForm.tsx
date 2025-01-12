@@ -30,12 +30,6 @@ const AddBookForm: React.FC<AddBookFormProps> = ({
   onClose,
   initialBook,
 }) => {
-const AddBookForm: React.FC<AddBookFormProps> = ({
-  onAddBook,
-  onUpdateBook,
-  onClose,
-  initialBook,
-}) => {
   const [title, setTitle] = useState('');
   const [author, setAuthor] = useState<string | null>(null);
   const [ebookUrl, setEbookUrl] = useState<string | null>(null);
@@ -103,8 +97,6 @@ const AddBookForm: React.FC<AddBookFormProps> = ({
       }
       onClose();
     } catch (error) {
-      const errorMessage =
-        error instanceof Error ? error.message : 'Unknown error';
       const errorMessage =
         error instanceof Error ? error.message : 'Unknown error';
       Alert.alert('Error', `Failed to save book: ${errorMessage}`);
