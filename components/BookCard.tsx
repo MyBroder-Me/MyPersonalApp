@@ -1,6 +1,11 @@
 import React from 'react';
-import { StyleSheet, Image, useWindowDimensions, Alert } from 'react-native';
-import { Text } from 'react-native-reanimated/lib/typescript/Animated';
+import {
+  StyleSheet,
+  Image,
+  useWindowDimensions,
+  Alert,
+  Text,
+} from 'react-native';
 import { ThemedView, ThemedViewProps } from './ThemedView';
 import { useThemeColor } from '@/hooks/useThemeColor';
 import { Book, DeleteBook } from '@/services/repositories/bookRepo';

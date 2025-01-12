@@ -63,6 +63,10 @@ export default function BooksScreen() {
       console.error('Error deleting book:', error);
     }
   };
+  const onCloseBookModal = () => {
+    setEditingBook(null);
+    setModalVisible(false);
+  };
 
   const openAddBookModal = () => {
     setEditingBook(null);
@@ -146,7 +150,7 @@ export default function BooksScreen() {
       />
       <BookModal
         visible={modalVisible}
-        onClose={() => setModalVisible(false)}
+        onClose={onCloseBookModal}
         onSave={handleAddBook}
         onUpdateBook={handleEditBook}
         book={editingBook}
