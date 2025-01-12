@@ -17,7 +17,7 @@ interface BookCardProps extends ThemedViewProps {
   // eslint-disable-next-line no-unused-vars
   onEdit: (book: Book) => void;
   // eslint-disable-next-line no-unused-vars
-  onDelete: (id: string) => void;
+  onDelete: (book: Book) => void;
 }
 
 const BookCard: React.FC<BookCardProps> = ({
@@ -58,8 +58,8 @@ const BookCard: React.FC<BookCardProps> = ({
 
   const handleDelete = async () => {
     try {
-      await DeleteBook(book.id);
-      onDelete(book.id);
+      await DeleteBook(book);
+      onDelete(book);
     } catch (error) {
       Alert.alert(
         'Failed to delete book',

@@ -31,10 +31,10 @@ const AddBookForm: React.FC<AddBookFormProps> = ({
   initialBook,
 }) => {
   const [title, setTitle] = useState('');
-  const [author, setAuthor] = useState<string | null>('');
-  const [ebookUrl, setEbookUrl] = useState<string | null>('');
-  const [ebookName, setEbookName] = useState<string | null>('');
-  const [imageUrl, setImageUrl] = useState<string | null>('');
+  const [author, setAuthor] = useState<string | null>(null);
+  const [ebookUrl, setEbookUrl] = useState<string | null>(null);
+  const [ebookName, setEbookName] = useState<string | null>(null);
+  const [imageUrl, setImageUrl] = useState<string | null>(null);
 
   useEffect(() => {
     if (initialBook && initialBook.id) {
@@ -60,8 +60,10 @@ const AddBookForm: React.FC<AddBookFormProps> = ({
         if (type === 'image') {
           setImageUrl(result.assets[0].uri);
         } else {
-          setEbookUrl(result.assets[0].uri);
-          setEbookName(result.assets[0].name);
+          if (result.assets && result.assets.length > 0) {
+            setEbookUrl(result.assets[0].uri);
+            setEbookName(result.assets[0].name);
+          }
         }
       }
     } catch (error) {
@@ -123,7 +125,9 @@ const AddBookForm: React.FC<AddBookFormProps> = ({
         value={author || ''}
         onChangeText={setAuthor}
       />
-      {imageUrl && <Image source={{ uri: imageUrl }} style={styles.image} />}
+      {imageUrl ? (
+        <Image source={{ uri: imageUrl }} style={styles.image} />
+      ) : null}
       {imageUrl ? (
         <ThemedView style={styles.deleteButton}>
           <Text

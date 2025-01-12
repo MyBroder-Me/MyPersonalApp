@@ -6,7 +6,7 @@ import BookCard from '@/components/BookCard';
 interface BooksListProps {
   books: Book[];
   // eslint-disable-next-line no-unused-vars
-  onDelete: (id: string) => void;
+  onDelete: (book: Book) => void;
   // eslint-disable-next-line no-unused-vars
   onEdit: (book: Book) => void;
 }
@@ -16,8 +16,10 @@ const BooksList: React.FC<BooksListProps> = ({ books, onDelete, onEdit }) => {
     <View style={styles.container}>
       <FlatList
         data={books}
-        keyExtractor={(item) => item.id}
-        renderItem={({ item }) => <BookCard book={item} onDelete={onDelete} onEdit={onEdit}/>}
+        keyExtractor={item => item.id}
+        renderItem={({ item }) => (
+          <BookCard book={item} onDelete={onDelete} onEdit={onEdit} />
+        )}
       />
     </View>
   );
