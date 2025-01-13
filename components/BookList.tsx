@@ -16,8 +16,10 @@ const BooksList: React.FC<BooksListProps> = ({ books, onDelete, onEdit }) => {
     <View style={styles.container}>
       <FlatList
         data={books}
-        keyExtractor={(item) => item.id}
-        renderItem={({ item }) => <BookCard book={item} onDelete={onDelete} onEdit={onEdit}/>}
+        keyExtractor={item => item.id}
+        renderItem={({ item }) => (
+          <BookCard book={item} onDelete={onDelete} onEdit={onEdit} />
+        )}
       />
     </View>
   );

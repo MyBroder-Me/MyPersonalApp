@@ -11,7 +11,11 @@ import ParallaxScrollView from '@/components/ParallaxScrollView';
 import { ThemedText } from '@/components/ThemedText';
 import { ThemedView } from '@/components/ThemedView';
 import { HelloWave } from '@/components/HelloWave';
-import { GetAllBooks, DeleteBook, Book } from '@/services/repositories/bookRepo';
+import {
+  GetAllBooks,
+  DeleteBook,
+  Book,
+} from '@/services/repositories/bookRepo';
 import BooksList from '@/components/BookList';
 import BookModal from '@/components/BookModal';
 import explorer_books from '@/assets/images/explorer_books.png';
@@ -25,8 +29,16 @@ export default function BooksScreen() {
   useEffect(() => {
     const fetchBooks = async () => {
       try {
+        const defaultImageURI =
+          'https://jgywuqgtfzblbaqprvdb.supabase.co/storage/v1/object/public/books_bucket/not-found.jpg';
         const booksData = await GetAllBooks();
-        setBooks(booksData);
+        const updatedUri = booksData.map(book => {
+          if (book.image_url === null || book.image_url === '') {
+            return { ...book, image_url: defaultImageURI };
+          }
+          return book;
+        });
+        setBooks(updatedUri);
       } catch (error) {
         console.error('Error fetching books:', error);
       } finally {
@@ -35,18 +47,20 @@ export default function BooksScreen() {
     };
 
     fetchBooks();
-  }, [books]);
+  }, []);
 
   const { width } = useWindowDimensions();
   const isMobile = width < 768;
+
   const handleAddBook = (newBook: Book) => {
     setBooks([newBook, ...books]);
     setModalVisible(false);
   };
 
   const handleEditBook = (updatedBook: Book) => {
-    console.log('recibo libro', updatedBook);
-    setBooks(books.map(book => (book.id === updatedBook.id ? updatedBook : book)));
+    setBooks(
+      books.map(book => (book.id === updatedBook.id ? updatedBook : book))
+    );
     setModalVisible(false);
   };
 
@@ -65,7 +79,6 @@ export default function BooksScreen() {
   };
 
   const openEditBookModal = (book: Book) => {
-    console.log('estoy abriendo el form de editar');
     setEditingBook(book);
     setModalVisible(true);
   };
@@ -120,32 +133,26 @@ export default function BooksScreen() {
   return (
     <ParallaxScrollView
       headerBackgroundColor={{ light: '#A1CEDC', dark: '#1D3D47' }}
-      headerImage={
-        <Image
-          source={explorer_books}
-        />
-      }>
+      headerImage={<Image source={explorer_books} />}
+    >
       <ThemedView style={styles.titleContainer}>
-        <ThemedText type="title">Books!
+        <ThemedText type="title">
+          Books!
           <HelloWave emoji="📚" />
         </ThemedText>
-        <ThemedView style={styles.managementButtons}>
-          <ThemedView 
-            style={[
-              styles.button,
-              styles.addButton
-            ]}
-          >
-            <Text 
-              style={styles.buttonText}
-              onPress={openAddBookModal}
-            >
-              Add Book
-            </Text>
-          </ThemedView>
+      </ThemedView>
+      <ThemedView style={styles.managementButtons}>
+        <ThemedView style={[styles.button, styles.addButton]}>
+          <Text style={styles.buttonText} onPress={openAddBookModal}>
+            Add Book{' '}
+          </Text>
         </ThemedView>
       </ThemedView>
-      <BooksList books={books} onDelete={handleDeleteBook} onEdit={openEditBookModal} />
+      <BooksList
+        books={books}
+        onDelete={handleDeleteBook}
+        onEdit={openEditBookModal}
+      />
       <BookModal
         visible={modalVisible}
         onClose={() => setModalVisible(false)}

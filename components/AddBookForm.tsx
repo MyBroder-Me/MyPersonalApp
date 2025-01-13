@@ -1,6 +1,11 @@
 import React, { useState, useEffect } from 'react';
 import { View, TextInput, Button, StyleSheet, Alert } from 'react-native';
-import { newBook, CreateBook, UpdateBook, Book } from '@/services/repositories/bookRepo';
+import {
+  newBook,
+  CreateBook,
+  UpdateBook,
+  Book,
+} from '@/services/repositories/bookRepo';
 
 interface AddBookFormProps {
   onAddBook: (book: Book) => void;
@@ -9,7 +14,12 @@ interface AddBookFormProps {
   initialBook?: newBook | Book;
 }
 
-const AddBookForm: React.FC<AddBookFormProps> = ({ onAddBook, onUpdateBook, onClose, initialBook }) => {
+const AddBookForm: React.FC<AddBookFormProps> = ({
+  onAddBook,
+  onUpdateBook,
+  onClose,
+  initialBook,
+}) => {
   const [title, setTitle] = useState('');
   const [author, setAuthor] = useState<string | null>('');
   const [ebookUrl, setEbookUrl] = useState<string | null>('');
@@ -39,10 +49,8 @@ const AddBookForm: React.FC<AddBookFormProps> = ({ onAddBook, onUpdateBook, onCl
     };
 
     try {
-      console.log(initialBook);
       if (initialBook && initialBook.id) {
         const updatedBook = await UpdateBook(initialBook.id, bookData);
-        console.log('form',updatedBook);
         onUpdateBook(updatedBook);
       } else {
         const createdBook = await CreateBook(bookData);
@@ -50,7 +58,8 @@ const AddBookForm: React.FC<AddBookFormProps> = ({ onAddBook, onUpdateBook, onCl
       }
       onClose();
     } catch (error) {
-      const errorMessage = error instanceof Error ? error.message : 'Unknown error';
+      const errorMessage =
+        error instanceof Error ? error.message : 'Unknown error';
       Alert.alert('Error', `Failed to save book: ${errorMessage}`);
     }
   };
