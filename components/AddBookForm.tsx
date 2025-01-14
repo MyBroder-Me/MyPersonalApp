@@ -35,6 +35,8 @@ const AddBookForm: React.FC<AddBookFormProps> = ({
   const [ebookUrl, setEbookUrl] = useState<string | null>(null);
   const [ebookName, setEbookName] = useState<string | null>(null);
   const [imageUrl, setImageUrl] = useState<string | null>(null);
+  const [imageFile, setImageFile] = useState<File | null>(null);
+  const [ebookFile, setEbookFile] = useState<File | null>(null);
 
   useEffect(() => {
     if (initialBook && initialBook.id) {
@@ -59,10 +61,12 @@ const AddBookForm: React.FC<AddBookFormProps> = ({
       if (!result.canceled) {
         if (type === 'image') {
           setImageUrl(result.assets[0].uri);
+          setImageFile(result.assets[0].file as File);
         } else {
           if (result.assets && result.assets.length > 0) {
             setEbookUrl(result.assets[0].uri);
             setEbookName(result.assets[0].name);
+            setEbookFile(result.assets[0].file as File);
           }
         }
       }
@@ -89,10 +93,15 @@ const AddBookForm: React.FC<AddBookFormProps> = ({
 
     try {
       if (initialBook && initialBook.id) {
-        const updatedBook = await UpdateBook(initialBook.id, bookData);
+        const updatedBook = await UpdateBook(
+          initialBook.id,
+          bookData,
+          imageFile,
+          ebookFile
+        );
         onUpdateBook(updatedBook);
       } else {
-        const createdBook = await CreateBook(bookData);
+        const createdBook = await CreateBook(bookData, imageFile, ebookFile);
         onAddBook(createdBook);
       }
       onClose();

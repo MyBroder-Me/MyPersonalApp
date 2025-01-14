@@ -1,26 +1,20 @@
 import { supabase } from '../client';
-import * as FileSystem from 'expo-file-system';
 
 const bucketName = 'books_bucket';
-const mimeTypes: { [key: string]: string } = {
-  '.jpg': 'image/jpeg',
-  '.jpeg': 'image/jpeg',
-  '.png': 'image/png',
-  '.gif': 'image/gif',
-  '.pdf': 'application/pdf',
-  '.epub': 'application/epub+zip',
-};
 
-const getMimeType = (filename: string): string => {
-  const extension = filename.substring(filename.lastIndexOf('.')).toLowerCase();
-  return mimeTypes[extension] || 'application/octet-stream';
-};
 
-export const Upload = async (uri: string): Promise<string> => {
-  console.log('uri', uri);
-  const file = await uriToFile(uri);
-  console.log('file', file);
-  const { data, error } = await supabase.storage.from(bucketName).upload(file.name, file);
+export const Upload = async (file: File, bookName: string | null): Promise<string> => {
+  const folder = file.type === 'application/pdf' ? 'ebooks' : 'images';
+  console.log('type archivo', file.type);
+  let fileName = bookName !== null ? bookName : file.name;
+  fileName = fileName.normalize('NFD')
+    .replace(/[\u0300-\u036f]/g, '')
+    .replace(/[^a-zA-Z0-9.-]/g, '_');
+  console.log('nombre book', bookName);
+  const extension = file.name.substring(file.name.lastIndexOf('.') + 1);
+  const name = `/${folder}/${fileName}.${extension}`;
+  console.log('nombre final', name);
+  const { data, error } = await supabase.storage.from(bucketName).upload(name, file);
   if (error) throw error;
   const url = await getPublicUrl(data.path);
   return url;
@@ -30,26 +24,6 @@ export const Delete = async (url: string): Promise<void> => {
   const path = getPathFromUrl(url);
   const { error } = await supabase.storage.from(bucketName).remove([path]);
   if (error) throw error;
-};
-
-
-export const uriToFile = async (uri: string): Promise<File> => {
-  const fileInfo = await FileSystem.getInfoAsync(uri);
-  console.log('fileInfo', fileInfo);
-  if (!fileInfo.exists) {
-    throw new Error('File does not exist');
-  }
-
-  const name = uri.split('/').pop() || 'file';
-  const type = getMimeType(name) || 'application/octet-stream';
-
-  const file = {
-    uri: fileInfo.uri,
-    name,
-    type,
-  };
-
-  return file as unknown as File;
 };
 
 async function getPublicUrl(path: string): Promise<string> {
