@@ -6,7 +6,7 @@ import BookCard from './BookCard';
 interface BooksListProps {
   books: Book[];
   // eslint-disable-next-line no-unused-vars
-  onDelete: (id: string) => void;
+  onDelete: (book: Book) => void;
   // eslint-disable-next-line no-unused-vars
   onEdit: (book: Book) => void;
 }
