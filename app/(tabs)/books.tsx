@@ -29,8 +29,16 @@ export default function BooksScreen() {
   useEffect(() => {
     const fetchBooks = async () => {
       try {
+        const defaultImageURI =
+          'https://jgywuqgtfzblbaqprvdb.supabase.co/storage/v1/object/public/books_bucket/not-found.jpg';
         const booksData = await GetAllBooks();
-        setBooks(booksData);
+        const updatedUri = booksData.map(book => {
+          if (book.image_url === null || book.image_url === '') {
+            return { ...book, image_url: defaultImageURI };
+          }
+          return book;
+        });
+        setBooks(updatedUri);
       } catch (error) {
         console.error('Error fetching books:', error);
       } finally {
@@ -39,10 +47,11 @@ export default function BooksScreen() {
     };
 
     fetchBooks();
-  }, [books]);
+  }, []);
 
   const { width } = useWindowDimensions();
   const isMobile = width < 768;
+
   const handleAddBook = (newBook: Book) => {
     setBooks([newBook, ...books]);
     setModalVisible(false);
@@ -135,12 +144,12 @@ export default function BooksScreen() {
           Books!
           <HelloWave emoji="📚" />
         </ThemedText>
-        <ThemedView style={styles.managementButtons}>
-          <ThemedView style={[styles.button, styles.addButton]}>
-            <Text style={styles.buttonText} onPress={openAddBookModal}>
-              Add Book
-            </Text>
-          </ThemedView>
+      </ThemedView>
+      <ThemedView style={styles.managementButtons}>
+        <ThemedView style={[styles.button, styles.addButton]}>
+          <Text style={styles.buttonText} onPress={openAddBookModal}>
+            Add Book{' '}
+          </Text>
         </ThemedView>
       </ThemedView>
       <BooksList

@@ -67,7 +67,6 @@ const BookCard: React.FC<BookCardProps> = ({
       );
     }
   };
-
   const handleEdit = () => {
     onEdit(book);
   };
@@ -154,6 +153,7 @@ const BookCard: React.FC<BookCardProps> = ({
       gap: 8,
     },
   });
+
   return (
     <ThemedView
       style={[styles.card, style]}
@@ -163,7 +163,9 @@ const BookCard: React.FC<BookCardProps> = ({
     >
       {book.image_url && (
         <Image
-          source={{ uri: book.image_url }}
+          source={{
+            uri: book.image_url,
+          }}
           style={styles.image}
           accessibilityLabel={`Cover image of ${book.title}`}
         />
