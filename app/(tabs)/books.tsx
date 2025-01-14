@@ -64,13 +64,17 @@ export default function BooksScreen() {
     setModalVisible(false);
   };
 
-  const handleDeleteBook = async (id: string) => {
+  const handleDeleteBook = async (deletedBook: Book) => {
     try {
-      await DeleteBook(id);
-      setBooks(books.filter(book => book.id !== id));
+      await DeleteBook(deletedBook);
+      setBooks(books.filter(book => book.id !== deletedBook.id));
     } catch (error) {
       console.error('Error deleting book:', error);
     }
+  };
+  const onCloseBookModal = () => {
+    setEditingBook(null);
+    setModalVisible(false);
   };
 
   const openAddBookModal = () => {
@@ -155,7 +159,7 @@ export default function BooksScreen() {
       />
       <BookModal
         visible={modalVisible}
-        onClose={() => setModalVisible(false)}
+        onClose={onCloseBookModal}
         onSave={handleAddBook}
         onUpdateBook={handleEditBook}
         book={editingBook}

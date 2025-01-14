@@ -1,6 +1,11 @@
 import React from 'react';
-import { StyleSheet, Image, useWindowDimensions, Alert } from 'react-native';
-import { Text, Divider } from '@react-native-material/core';
+import {
+  StyleSheet,
+  Image,
+  useWindowDimensions,
+  Alert,
+  Text,
+} from 'react-native';
 import { ThemedView, ThemedViewProps } from './ThemedView';
 import { useThemeColor } from '@/hooks/useThemeColor';
 import { Book, DeleteBook } from '@/services/repositories/bookRepo';
@@ -12,7 +17,7 @@ interface BookCardProps extends ThemedViewProps {
   // eslint-disable-next-line no-unused-vars
   onEdit: (book: Book) => void;
   // eslint-disable-next-line no-unused-vars
-  onDelete: (id: string) => void;
+  onDelete: (book: Book) => void;
 }
 
 const BookCard: React.FC<BookCardProps> = ({
@@ -53,8 +58,8 @@ const BookCard: React.FC<BookCardProps> = ({
 
   const handleDelete = async () => {
     try {
-      await DeleteBook(book.id);
-      onDelete(book.id);
+      await DeleteBook(book);
+      onDelete(book);
     } catch (error) {
       Alert.alert(
         'Failed to delete book',
@@ -171,7 +176,6 @@ const BookCard: React.FC<BookCardProps> = ({
         <Text style={styles.date}>
           Added on {new Date(book.created_at).toLocaleDateString()}
         </Text>
-        <Divider color={secondaryTextColor} />
         <ThemedView style={styles.buttonContainer}>
           <ThemedView style={styles.primaryButtons}>
             {book.ebook_url && (
