@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import { Modal, View, Button, StyleSheet } from 'react-native';
 import { Book, newBook } from '@/services/repositories/bookRepo';
-import AddBookForm from '@/components/AddBookForm';
+import AddBookForm from '@/components/categories/books/AddBookForm';
 
 interface BookModalProps {
   visible: boolean;

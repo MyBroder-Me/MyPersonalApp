@@ -1,7 +1,7 @@
 import React from 'react';
 import { FlatList, StyleSheet, View } from 'react-native';
 import { Book } from '@/services/repositories/bookRepo';
-import BookCard from '@/components/BookCard';
+import BookCard from './BookCard';
 
 interface BooksListProps {
   books: Book[];

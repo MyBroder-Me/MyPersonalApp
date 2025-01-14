@@ -8,15 +8,15 @@ import {
 import { ThemedView, ThemedViewProps } from '../ThemedView';
 import { ThemedText } from '../ThemedText';
 import { useThemeColor } from '@/hooks/useThemeColor';
-import { Link } from 'expo-router';
+import { Link, RelativePathString } from 'expo-router';
 
-interface ThemeCardProps extends ThemedViewProps {
+interface CategoryCardProps extends ThemedViewProps {
   image: ImageSourcePropType;
   name: string;
   url: string;
 }
 
-const ThemeCard: React.FC<ThemeCardProps> = ({
+const CategoryCard: React.FC<CategoryCardProps> = ({
   image,
   name,
   url,
@@ -78,7 +78,7 @@ const ThemeCard: React.FC<ThemeCardProps> = ({
       {...otherProps}
     >
       {image && (
-        <Link href={`./${url}`}>
+        <Link replace href={{ pathname: url as RelativePathString }}>
           <ImageBackground
             source={image}
             style={styles.imageBackground}
@@ -96,4 +96,4 @@ const ThemeCard: React.FC<ThemeCardProps> = ({
   );
 };
 
-export default ThemeCard;
+export default CategoryCard;

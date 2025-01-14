@@ -16,8 +16,8 @@ import {
   DeleteBook,
   Book,
 } from '@/services/repositories/bookRepo';
-import BooksList from '@/components/BookList';
-import BookModal from '@/components/BookModal';
+import BooksList from '@/components/categories/books/BookList';
+import BookModal from '@/components/categories/books/BookModal';
 import explorer_books from '@/assets/images/explorer_books.png';
 
 export default function BooksScreen() {
@@ -133,7 +133,7 @@ export default function BooksScreen() {
   return (
     <ParallaxScrollView
       headerBackgroundColor={{ light: '#A1CEDC', dark: '#1D3D47' }}
-      headerImage={<Image source={explorer_books} />}
+      headerImage={<Image source={explorer_books} style={styles.headerImage} />}
     >
       <ThemedView style={styles.titleContainer}>
         <ThemedText type="title">
