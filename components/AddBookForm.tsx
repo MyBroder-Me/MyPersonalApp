@@ -117,6 +117,7 @@ const AddBookForm: React.FC<AddBookFormProps> = ({
       setImageUrl(null);
     } else {
       setEbookUrl(null);
+      setEbookName(null);
     }
   }
 
