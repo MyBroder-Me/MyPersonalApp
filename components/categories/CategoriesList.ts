@@ -11,7 +11,7 @@ const explorerData: ExplorerItem[] = [
   {
     name: 'Books',
     image: explorer_books,
-    url: '/books'
+    url: '/(pages)/books'
   }
 ];
 

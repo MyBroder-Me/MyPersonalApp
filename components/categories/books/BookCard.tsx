@@ -1,14 +1,10 @@
 import React from 'react';
-import {
-  StyleSheet,
-  Image,
-  useWindowDimensions,
-  Alert,
-  Text,
-} from 'react-native';
-import { ThemedView, ThemedViewProps } from './ThemedView';
+import { StyleSheet, Image, useWindowDimensions, Alert } from 'react-native';
+import { Text, Divider } from '@react-native-material/core';
+import { ThemedView, ThemedViewProps } from '@/components/ThemedView';
 import { useThemeColor } from '@/hooks/useThemeColor';
 import { Book, DeleteBook } from '@/services/repositories/bookRepo';
+import { Tag } from '@/components/Tag';
 
 interface BookCardProps extends ThemedViewProps {
   book: Book;
@@ -71,6 +67,12 @@ const BookCard: React.FC<BookCardProps> = ({
     onEdit(book);
   };
   const styles = StyleSheet.create({
+    tagsContainer: {
+      flexDirection: 'row',
+      flexWrap: 'wrap',
+      gap: 8,
+      marginBottom: 12,
+    },
     card: {
       borderRadius: 8,
       padding: 16,
@@ -176,9 +178,15 @@ const BookCard: React.FC<BookCardProps> = ({
         <Text style={styles.date}>
           Added on {new Date(book.created_at).toLocaleDateString()}
         </Text>
+        <ThemedView style={styles.tagsContainer}>
+          <Tag genre="Fantasy">Test Tag</Tag>
+          <Tag genre="Mystery">Test Tag</Tag>
+          <Tag genre="Horror">Test Tag</Tag>
+        </ThemedView>
+        <Divider color={secondaryTextColor} />
         <ThemedView style={styles.buttonContainer}>
           <ThemedView style={styles.primaryButtons}>
-            {book.ebook_url && (
+            {!(book.ebook_url == '') && (
               <ThemedView
                 style={[styles.button, !onReadEbook && styles.buttonDisabled]}
               >

@@ -1,13 +1,13 @@
 import React from 'react';
-import ThemeCard from '@/components/explore/ThemeCard';
-import explorerData from '@/components/explore/Categories';
+import CategoryCard from '@/components/categories/CategoryCard';
+import explorerData from '@/components/categories/CategoriesList';
 
 export default function TabTwoScreen() {
   return (
     <>
       {explorerData.map(item => {
         return (
-          <ThemeCard
+          <CategoryCard
             key={item.name}
             image={item.image}
             name={item.name}
