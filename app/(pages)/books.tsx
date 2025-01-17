@@ -29,12 +29,10 @@ export default function BooksScreen() {
   useEffect(() => {
     const fetchBooks = async () => {
       try {
-        const defaultImageURI =
-          'https://jgywuqgtfzblbaqprvdb.supabase.co/storage/v1/object/public/books_bucket/not-found.jpg';
         const booksData = await GetAllBooks();
         const updatedUri = booksData.map(book => {
           if (book.image_url === null || book.image_url === '') {
-            return { ...book, image_url: defaultImageURI };
+            return { ...book, image_url: ' ' };
           }
           return book;
         });
@@ -144,9 +142,9 @@ export default function BooksScreen() {
           Books!
           <HelloWave emoji="📚" />
         </ThemedText>
-      </ThemedView>
-      <ThemedView style={styles.managementButtons}>
-        <ThemedView style={[styles.button, styles.addButton]}>
+        <ThemedView
+          style={[styles.button, styles.addButton, styles.managementButtons]}
+        >
           <Text style={styles.buttonText} onPress={openAddBookModal}>
             Add Book{' '}
           </Text>
