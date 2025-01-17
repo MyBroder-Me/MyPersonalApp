@@ -15,7 +15,7 @@ import {
   Book,
 } from '@/services/repositories/bookRepo';
 import * as DocumentPicker from 'expo-document-picker';
-import { ThemedView } from './ThemedView';
+import { ThemedView } from '@/components/ThemedView';
 
 interface AddBookFormProps {
   onAddBook: (book: Book) => void;
