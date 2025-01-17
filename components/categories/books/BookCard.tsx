@@ -77,13 +77,7 @@ const BookCard: React.FC<BookCardProps> = ({
       borderRadius: 8,
       padding: 16,
       margin: 8,
-      shadowColor: '#000',
-      shadowOffset: {
-        width: 0,
-        height: 2,
-      },
-      shadowOpacity: 0.23,
-      shadowRadius: 2.62,
+      boxShadow: '0px 2px 2.62px rgba(0, 0, 0, 0.23)',
       elevation: 4,
       flexDirection: isMobile ? 'column' : 'row',
     },
@@ -92,7 +86,6 @@ const BookCard: React.FC<BookCardProps> = ({
       height: isMobile ? 200 : 180,
       marginBottom: isMobile ? 16 : 0,
       marginRight: isMobile ? 0 : 16,
-      resizeMode: 'cover',
       borderRadius: 4,
     },
     content: {
@@ -168,7 +161,7 @@ const BookCard: React.FC<BookCardProps> = ({
           source={{
             uri: book.image_url,
           }}
-          style={styles.image}
+          style={[styles.image, { objectFit: 'cover' }]}
           accessibilityLabel={`Cover image of ${book.title}`}
         />
       )}
