@@ -15,6 +15,7 @@ import {
   GetAllBooks,
   DeleteBook,
   Book,
+  UpdateBook,
 } from '@/services/repositories/bookRepo';
 import BooksList from '@/components/categories/books/BookList';
 import BookModal from '@/components/categories/books/BookModal';
@@ -68,6 +69,15 @@ export default function BooksScreen() {
       setBooks(books.filter(book => book.id !== deletedBook.id));
     } catch (error) {
       console.error('Error deleting book:', error);
+    }
+  };
+  const handleToggleFinished = async (book: Book) => {
+    try {
+      const updatedBook = { ...book, is_finished: !book.is_finished };
+      await UpdateBook(book.id, updatedBook, null, null);
+      setBooks(books.map(b => (b.id === book.id ? updatedBook : b)));
+    } catch (error) {
+      console.error('Error updating book:', error);
     }
   };
   const onCloseBookModal = () => {
@@ -154,6 +164,7 @@ export default function BooksScreen() {
         books={books}
         onDelete={handleDeleteBook}
         onEdit={openEditBookModal}
+        onToggleFinished={handleToggleFinished}
       />
       <BookModal
         visible={modalVisible}
