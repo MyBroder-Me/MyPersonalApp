@@ -6,8 +6,11 @@ import {
   ActivityIndicator,
   Text,
   useWindowDimensions,
+  Alert,
+  Platform,
 } from 'react-native';
 import ParallaxScrollView from '@/components/ParallaxScrollView';
+import * as FileSystem from 'expo-file-system';
 import { ThemedText } from '@/components/ThemedText';
 import { ThemedView } from '@/components/ThemedView';
 import { HelloWave } from '@/components/HelloWave';
@@ -19,6 +22,7 @@ import {
 import BooksList from '@/components/categories/books/BookList';
 import BookModal from '@/components/categories/books/BookModal';
 import explorer_books from '@/assets/images/explorer_books.png';
+import { startActivityAsync } from 'expo-intent-launcher';
 
 export default function BooksScreen() {
   const [books, setBooks] = useState<Book[]>([]);
@@ -68,6 +72,43 @@ export default function BooksScreen() {
       setBooks(books.filter(book => book.id !== deletedBook.id));
     } catch (error) {
       console.error('Error deleting book:', error);
+    }
+  };
+
+  const onReadEbook = async (book: Book) => {
+    if (!book.ebook_url) {
+      Alert.alert('No ebook available', 'This book does not have an ebook');
+      return;
+    }
+    const downloadResumable = FileSystem.createDownloadResumable(
+      book.ebook_url,
+      FileSystem.documentDirectory + book.title + '.pdf',
+      {}
+    );
+    try {
+      const result = await downloadResumable.downloadAsync();
+      if (result && result.uri) {
+        openFile(result.uri, 'application/pdf');
+      } else {
+        console.error('Download failed or returned undefined');
+      }
+    } catch (error) {
+      console.error('Error downloading ebook:', error);
+    }
+  };
+  const openFile = async (fileUri: string, type: string) => {
+    try {
+      if (Platform.OS === 'android') {
+        const contentUri = await FileSystem.getContentUriAsync(fileUri);
+        console.log(contentUri);
+        await startActivityAsync('android.intent.action.VIEW', {
+          data: contentUri,
+          flags: 1,
+          type,
+        });
+      }
+    } catch (error) {
+      console.log(error);
     }
   };
   const onCloseBookModal = () => {
@@ -154,6 +195,7 @@ export default function BooksScreen() {
         books={books}
         onDelete={handleDeleteBook}
         onEdit={openEditBookModal}
+        onReadEbook={onReadEbook}
       />
       <BookModal
         visible={modalVisible}
