@@ -9,6 +9,7 @@ interface BooksListProps {
   onDelete: (book: Book) => void;
   // eslint-disable-next-line no-unused-vars
   onEdit: (book: Book) => void;
+  onReadEbook: (book: Book) => void;
   onToggleFinished: (book: Book) => void;
 }
 
@@ -16,6 +17,7 @@ const BooksList: React.FC<BooksListProps> = ({
   books,
   onDelete,
   onEdit,
+  onReadEbook,
   onToggleFinished,
 }) => {
   return (
@@ -28,6 +30,7 @@ const BooksList: React.FC<BooksListProps> = ({
             book={item}
             onDelete={onDelete}
             onEdit={onEdit}
+            onReadEbook={onReadEbook}
             onToggleFinished={onToggleFinished}
           />
         )}

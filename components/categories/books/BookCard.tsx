@@ -8,6 +8,8 @@ import { Tag } from '@/components/Tag';
 
 interface BookCardProps extends ThemedViewProps {
   book: Book;
+  onReadEbook: (book: Book) => void;
+  onToggleFinished?: () => void;
   onReadEbook?: () => void;
   onToggleFinished: (book: Book) => void;
   // eslint-disable-next-line no-unused-vars
@@ -66,6 +68,8 @@ const BookCard: React.FC<BookCardProps> = ({
   const handleEdit = () => {
     onEdit(book);
   };
+  const handleRead = () => {
+    onReadEbook(book);
   const handleToggleFinished = () => {
     onToggleFinished(book);
   };
@@ -183,10 +187,8 @@ const BookCard: React.FC<BookCardProps> = ({
         <ThemedView style={styles.buttonContainer}>
           <ThemedView style={styles.primaryButtons}>
             {!(book.ebook_url == '') && (
-              <ThemedView
-                style={[styles.button, !onReadEbook && styles.buttonDisabled]}
-              >
-                <Text style={styles.buttonText} onPress={onReadEbook}>
+              <ThemedView style={[styles.button]}>
+                <Text style={styles.buttonText} onPress={handleRead}>
                   Read eBook
                 </Text>
               </ThemedView>
