@@ -10,6 +10,8 @@ interface BookCardProps extends ThemedViewProps {
   book: Book;
   onReadEbook: (book: Book) => void;
   onToggleFinished?: () => void;
+  onReadEbook?: () => void;
+  onToggleFinished: (book: Book) => void;
   // eslint-disable-next-line no-unused-vars
   onEdit: (book: Book) => void;
   // eslint-disable-next-line no-unused-vars
@@ -68,6 +70,8 @@ const BookCard: React.FC<BookCardProps> = ({
   };
   const handleRead = () => {
     onReadEbook(book);
+  const handleToggleFinished = () => {
+    onToggleFinished(book);
   };
   const styles = StyleSheet.create({
     tagsContainer: {
@@ -189,13 +193,11 @@ const BookCard: React.FC<BookCardProps> = ({
                 </Text>
               </ThemedView>
             )}
-            <ThemedView
-              style={[
-                styles.button,
-                !onToggleFinished && styles.buttonDisabled,
-              ]}
-            >
-              <Text style={styles.buttonText} onPress={onToggleFinished}>
+            <ThemedView style={[styles.button]}>
+              <Text
+                style={styles.buttonText}
+                onPress={() => handleToggleFinished()}
+              >
                 {book.is_finished ? 'Mark Unfinished' : 'Mark Finished'}
               </Text>
             </ThemedView>
